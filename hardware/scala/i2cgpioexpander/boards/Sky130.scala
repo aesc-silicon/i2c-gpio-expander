@@ -38,7 +38,7 @@ case class Sky130Top(p: I2cGpioExpander.Parameter, resetDelay: Int) extends Comp
   }
   val clock = Bool
   val reset = Bool
-  val address = Bits(3 bits)
+  val address = Bits(io.address.length bits)
 
   io.clock <> top_gpiov2().asInput(clock)
   io.reset <> top_gpiov2().asInput(reset)
@@ -61,7 +61,7 @@ case class Sky130Top(p: I2cGpioExpander.Parameter, resetDelay: Int) extends Comp
 
   io.i2c.interrupt <> top_gpiov2().asOutput(system.expander.io.i2c.interrupts(0))
   io.i2c.scl <> top_gpiov2(system.expander.io.i2c.scl)
-  io.i2c.sda <> top_gpiov2(system.expander.io.i2c.sda).setName("fooooo")
+  io.i2c.sda <> top_gpiov2(system.expander.io.i2c.sda)
   for (index <- 0 until io.gpio.length) {
     io.gpio(index) <> top_gpiov2(system.expander.io.gpio.pins(index))
   }
