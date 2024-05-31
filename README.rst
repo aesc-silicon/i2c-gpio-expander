@@ -1,7 +1,7 @@
 Open Source I2C Gpio Expander
 =============================
 
-An Open Source I2C GPIO Expander written in SpinalHDL. The chip layout was done with the SKY130 PDK and the open RTL-to-GDSII tool OpenROAD.
+An Open Source I2C GPIO Expander written in SpinalHDL. Chip layouts for the SKY130 and SG13G2 PDKs are avaibale for the open RTL-to-GDSII tool OpenROAD.
 
 Features
 ########
@@ -43,7 +43,7 @@ Installation
 - Download and build all components::
 
         chmod +x init.sh
-        ./init.sh
+        ./init.sh [sg13g2/sky130]
 
 This may take several minutes and requires 60 GB disk storage!
 
@@ -67,14 +67,14 @@ First, generate the required files for the ECPIX5 Board and afterwards, synthesi
 
 .. code-block:: text
 
-    ecp5-generate
-    ecp5-synthesize
+    make ecp5-generate
+    make ecp5-synthesize
 
 Next, flash the bitstream into the ECP5 FPGA.
 
 .. code-block:: text
 
-    ecp5-flash
+    make ecp5-flash
 
 Connect PMOD0 pin 0 (SCL) and pin 1 (SDA) to an I2C Controller (Master) interface.
 
@@ -85,8 +85,8 @@ The ASIC flow is similar to the FPGA one. Generate all required files at the beg
 
 .. code-block:: text
 
-    sky130-generate
-    sky130-synthesize
+    make sky130-generate
+    make sky130-synthesize
 
 Please check Known Issues in case the chip layout failed.
 
@@ -94,7 +94,38 @@ Finally, open the chip layout and inspect the layout.
 
 .. code-block:: text
 
-    sky130-gui
+    make sky130-openroad
+
+Similar targets are available for the IHP SG13G2 PDK:
+
+.. code-block:: text
+
+    make sg13g2-generate
+    make sg13g2-synthesize
+
+Open the design with either OpenROAD or Klayout:
+
+.. code-block:: text
+
+    make sky130-openroad
+    make sky130-klayout
+
+Design Rule Checks
+##################
+
+The following targets run Design Rule Checks for the chip layout. The first two run the minimal set.
+
+.. code-block:: text
+
+    make sg13g2-drc-minimal
+    make sg13g2-drc-minimal-gui
+
+The following two run an enhanced set of rules.
+
+.. code-block:: text
+
+    make sg13g2-drc-maximal
+    make sg13g2-drc-maximal-gui
 
 Known Issues
 ############
