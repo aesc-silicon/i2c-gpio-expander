@@ -9,5 +9,5 @@
 	<project name="SpinalHDL/SpinalCrypto" path="modules/elements/SpinalCrypto" revision="27e0ceb430ac" />
 	<project name="aesc-silicon/elements-vexriscv" path="modules/elements/vexriscv" revision="15e5d08322ef" />
 	<project name="dnltz/OpenROAD-flow-scripts" path="tools/OpenROAD-flow-scripts" revision="53a9b78f1f8e851c45d5e3cfa90e3bd854ca0cd7" />
-	<project name="aesc-silicon/gdsiistl" path="tools/gdsiistl" />
+	<project name="aesc-silicon/gdsiistl" path="tools/gdsiistl" revision="5884b20565a765f10918eedc0787a2beb6a682fd" />
 </manifest>
