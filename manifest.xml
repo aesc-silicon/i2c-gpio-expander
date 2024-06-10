@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<manifest>
+	<remote fetch="https://github.com" name="github" />
+
+	<default remote="github" sync-j="8" sync-s="true" />
+
+	<project name="aesc-silicon/elements-nafarr" path="modules/elements/nafarr" revision="bfc54d0d612cffd3c2c2a36bbbb825be3eff0e88" />
+	<project name="aesc-silicon/elements-zibal" path="modules/elements/zibal" revision="294c03bd4bab326367b594b2160dff4753f74ee3" />
+	<project name="SpinalHDL/SpinalCrypto" path="modules/elements/SpinalCrypto" revision="27e0ceb430ac" />
+	<project name="aesc-silicon/elements-vexriscv" path="modules/elements/vexriscv" revision="15e5d08322ef" />
+	<project name="dnltz/OpenROAD-flow-scripts" path="tools/OpenROAD-flow-scripts" revision="53a9b78f1f8e851c45d5e3cfa90e3bd854ca0cd7" />
+	<project name="aesc-silicon/gdsiistl" path="tools/gdsiistl" />
+</manifest>
