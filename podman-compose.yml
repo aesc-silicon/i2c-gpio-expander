@@ -1,0 +1,23 @@
+---
+version: '3'
+volumes:
+  sbt-cache:
+  ivy2-cache:
+  cache:
+services:
+  elemrv:
+    build: .
+    image: elements:v1
+    container_name: i2c-gpio-expander_container
+    environment:
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /home:/home
+      - $XAUTHORITY:$XAUTHORITY:ro
+      - /tmp/.X11-unix:/tmp/.X11-unix:ro
+      - ivy2-cache:/root/.ivy2
+      - sbt-cache:/root/.sbt
+      - cache:/root/.cache
+    command: ["sleep", "infinity"]
+
+

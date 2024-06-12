@@ -7,3 +7,5 @@ project/target/
 simWorkspace/
 target/
 tools/
+.repo/
+repo
