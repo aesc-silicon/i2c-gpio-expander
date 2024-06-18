@@ -16,15 +16,9 @@ case class SG13G2Top(p: I2cGpioExpander.Parameter, resetDelay: Int) extends Comp
     val clock = IhpCmosIo("south", 0)
     val reset = IhpCmosIo("south", 1, "clk_core")
     val i2c = new Bundle {
-      val scl = new Bundle {
-        val read = IhpCmosIo("south", 2, "clk_core")
-        val write = IhpCmosIo("south", 3, "clk_core")
-      }
-      val sda = new Bundle {
-        val read = IhpCmosIo("east", 0, "clk_core")
-        val write = IhpCmosIo("east", 1, "clk_core")
-      }
-      val interrupt = IhpCmosIo("east", 2, "clk_core")
+      val scl = IhpCmosIo("south", 2, "clk_core")
+      val sda = IhpCmosIo("south", 3, "clk_core")
+      val interrupt = IhpCmosIo("east", 0, "clk_core")
     }
     val gpio = Vec(
       IhpCmosIo("north", 0, "clk_core"),
@@ -37,6 +31,8 @@ case class SG13G2Top(p: I2cGpioExpander.Parameter, resetDelay: Int) extends Comp
       IhpCmosIo("west", 3, "clk_core")
     )
     val address = Vec(
+      IhpCmosIo("east", 1, "clk_core"),
+      IhpCmosIo("east", 2, "clk_core"),
       IhpCmosIo("east", 3, "clk_core")
     )
   }
@@ -64,17 +60,15 @@ case class SG13G2Top(p: I2cGpioExpander.Parameter, resetDelay: Int) extends Comp
   }
 
   io.i2c.interrupt <> IOPadOut4mA(system.expander.io.i2c.interrupts(0))
-  io.i2c.scl.read <> IOPadIn(system.expander.io.i2c.scl.read)
-  io.i2c.scl.write <> IOPadOut4mA(system.expander.io.i2c.scl.write)
-  io.i2c.sda.read <> IOPadIn(system.expander.io.i2c.sda.read)
-  io.i2c.sda.write <> IOPadOut4mA(system.expander.io.i2c.sda.write)
+  io.i2c.scl <> IOPadInOut4mA(system.expander.io.i2c.scl)
+  io.i2c.sda <> IOPadInOut4mA(system.expander.io.i2c.sda)
   for (index <- 0 until io.gpio.length) {
     io.gpio(index) <> IOPadInOut16mA(system.expander.io.gpio.pins(index))
   }
 }
 object SG13G2Generate extends ElementsApp {
   elementsConfig.genASICSpinalConfig.generateVerilog {
-    val top = SG13G2Top(I2cGpioExpander.Parameter.default.copy(addressWidth=1), 128)
+    val top = SG13G2Top(I2cGpioExpander.Parameter.default.copy(addressWidth=3), 128)
 
     val config = OpenROADTools.IHP.Config(elementsConfig)
     config.generate(

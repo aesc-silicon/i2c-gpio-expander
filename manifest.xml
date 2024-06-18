@@ -4,7 +4,7 @@
 
 	<default remote="github" sync-j="8" />
 
-	<project name="aesc-silicon/elements-nafarr" path="modules/elements/nafarr" revision="bfc54d0d612cffd3c2c2a36bbbb825be3eff0e88" />
+	<project name="aesc-silicon/elements-nafarr" path="modules/elements/nafarr" revision="91a985e077801424c1e03ce996ab1523889ccb2f" />
 	<project name="aesc-silicon/elements-zibal" path="modules/elements/zibal" revision="83c229628f8436d9100e0e444af1a9f13a0a0ea5" />
 	<project name="SpinalHDL/SpinalCrypto" path="modules/elements/SpinalCrypto" revision="27e0ceb430ac1b1896168f1a093d06a3d7c1cf7f" />
 	<project name="aesc-silicon/elements-vexriscv" path="modules/elements/vexriscv" revision="15e5d08322efa27accaaa9995e621bf629a1f4b4" />
