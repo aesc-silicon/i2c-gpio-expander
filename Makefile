@@ -89,4 +89,7 @@ sg13g2-drc-maximal-gui:
 
 # Misc.
 clean:
-	rm -rf build/
+	rm -rf ${OPENROAD_FLOW_ROOT}/results/
+	rm -rf ${OPENROAD_FLOW_ROOT}/log/
+	rm -rf ${OPENROAD_FLOW_ROOT}/objects/
+	rm -rf ${BUILD_ROOT}
