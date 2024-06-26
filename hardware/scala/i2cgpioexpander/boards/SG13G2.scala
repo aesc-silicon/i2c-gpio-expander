@@ -18,22 +18,22 @@ case class SG13G2Top(p: I2cGpioExpander.Parameter, resetDelay: Int) extends Comp
     val i2c = new Bundle {
       val scl = IhpCmosIo("south", 2, "clk_core")
       val sda = IhpCmosIo("south", 3, "clk_core")
-      val interrupt = IhpCmosIo("east", 0, "clk_core")
+      val interrupt = IhpCmosIo("south", 4, "clk_core")
     }
     val gpio = Vec(
       IhpCmosIo("north", 0, "clk_core"),
       IhpCmosIo("north", 1, "clk_core"),
       IhpCmosIo("north", 2, "clk_core"),
       IhpCmosIo("north", 3, "clk_core"),
+      IhpCmosIo("north", 4, "clk_core"),
       IhpCmosIo("west", 0, "clk_core"),
       IhpCmosIo("west", 1, "clk_core"),
-      IhpCmosIo("west", 2, "clk_core"),
-      IhpCmosIo("west", 3, "clk_core")
+      IhpCmosIo("west", 2, "clk_core")
     )
     val address = Vec(
-      IhpCmosIo("east", 1, "clk_core"),
       IhpCmosIo("east", 2, "clk_core"),
-      IhpCmosIo("east", 3, "clk_core")
+      IhpCmosIo("east", 3, "clk_core"),
+      IhpCmosIo("east", 4, "clk_core")
     )
   }
   val clock = Bool
@@ -73,8 +73,8 @@ object SG13G2Generate extends ElementsApp {
     val config = OpenROADTools.IHP.Config(elementsConfig)
     config.generate(
       OpenROADTools.PDKs.IHP.sg13g2,
-      (0.0, 0.0, 1300, 1300),
-      (550.08, 548.1, 750.24, 752.22)
+      (0.0, 0.0, 1050, 1050),
+      (425.28, 427.16, 631.2, 630.24)
     )
 
     val sdc = OpenROADTools.IHP.Sdc(elementsConfig)
@@ -82,14 +82,10 @@ object SG13G2Generate extends ElementsApp {
     sdc.generate(top.io)
 
     val io = OpenROADTools.IHP.Io(elementsConfig)
-    io.addPad("south", 4, "sg13g2_IOPadIOVdd")
-    io.addPad("south", 5, "sg13g2_IOPadIOVss")
-    io.addPad("east", 4, "sg13g2_IOPadVdd")
-    io.addPad("east", 5, "sg13g2_IOPadVss")
-    io.addPad("north", 4, "sg13g2_IOPadIOVdd")
-    io.addPad("north", 5, "sg13g2_IOPadIOVss")
+    io.addPad("east", 0, "sg13g2_IOPadVdd")
+    io.addPad("east", 1, "sg13g2_IOPadVss")
+    io.addPad("west", 3, "sg13g2_IOPadVss")
     io.addPad("west", 4, "sg13g2_IOPadVdd")
-    io.addPad("west", 5, "sg13g2_IOPadVss")
     io.generate(top.io)
 
     val pdn = OpenROADTools.IHP.Pdn(elementsConfig)
