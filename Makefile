@@ -10,7 +10,9 @@ CAD_ROOT=${INSTALL_PATH}/tools/magic/build/lib/
 OPENROAD_EXE=/usr/bin/openroad
 YOSYS_CMD=${INSTALL_PATH}/oss-cad-suite/bin/yosys
 PDK_SKY130_IO_DIR=${INSTALL_PATH}/pdks/share/pdk/sky130A/libs.ref/sky130_fd_io/
-PDK_SG13G2_KLAYOUT_DIR=${INSTALL_PATH}/pdks/IHP-Open-PDK/ihp-sg13g2/libs.tech/klayout/
+# TODO use official PDK from container again after all changes got merged
+#PDK_SG13G2_KLAYOUT_DIR=${INSTALL_PATH}/pdks/IHP-Open-PDK/ihp-sg13g2/libs.tech/klayout/
+PDK_SG13G2_KLAYOUT_DIR=${PWD}/pdks/IHP-Open-PDK/ihp-sg13g2/libs.tech/klayout/
 
 SOC=I2cGpioExpander
 FPGA_FAMILY=ecp5
@@ -25,6 +27,7 @@ ELEMENTS_BASE=${ZIBAL_BASE}
 GCC=${INSTALL_PATH}/zephyr-sdk-0.16.5/riscv64-zephyr-elf/bin/riscv64-zephyr-elf
 
 sg13g2-sealring: KLAYOUT_HOME=${PDK_SG13G2_KLAYOUT_DIR}
+sg13g2-synthesize: KLAYOUT_HOME=${PDK_SG13G2_KLAYOUT_DIR}
 sg13g2-klayout: KLAYOUT_HOME=${PDK_SG13G2_KLAYOUT_DIR}
 sg13g2-drc-minimal: KLAYOUT_HOME=${PDK_SG13G2_KLAYOUT_DIR}
 sg13g2-drc-minimal-gui: KLAYOUT_HOME=${PDK_SG13G2_KLAYOUT_DIR}
@@ -64,10 +67,16 @@ sg13g2-generate:
 sg13g2-sealring:
 	$(eval WIDTH := $(shell head -n 1 ${BUILD_ROOT}/${SOC}/SG13G2/zibal/SG13G2Top.sealring.txt))
 	$(eval HEIGHT := $(shell tail -n 1 ${BUILD_ROOT}/${SOC}/SG13G2/zibal/SG13G2Top.sealring.txt))
-	klayout -n sg13g2 -zz -r sealring.py -rd width=${WIDTH} -rd height=${HEIGHT} -rd output=${BUILD_ROOT}/${SOC}/SG13G2/zibal/macros/sealring/sealring.gds.gz
+	klayout -n sg13g2 -zz -r ${KLAYOUT_HOME}/tech/scripts/sealring.py \
+		-rd width=${WIDTH} -rd height=${HEIGHT} \
+		-rd output=${BUILD_ROOT}/${SOC}/SG13G2/zibal/macros/sealring/sealring.gds.gz
 
 sg13g2-synthesize: sg13g2-sealring
 	source ${OPENROAD_FLOW_ROOT}/../env.sh && make -C ${OPENROAD_FLOW_ROOT} DESIGN_CONFIG=${BUILD_ROOT}/${SOC}/SG13G2/zibal/SG13G2Top.mk
+	klayout -n sg13g2 -zz -r ${KLAYOUT_HOME}/tech/scripts/filler.py \
+		-rd output_file=${OPENROAD_FLOW_ROOT}/results/ihp-sg13g2/SG13G2Top/base/6_final.gds \
+		${OPENROAD_FLOW_ROOT}/results/ihp-sg13g2/SG13G2Top/base/6_final.gds
+
 
 sg13g2-openroad:
 	openroad -gui <(echo read_db ${OPENROAD_FLOW_ROOT}/results/ihp-sg13g2/SG13G2Top/base/6_final.odb)

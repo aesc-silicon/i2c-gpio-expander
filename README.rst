@@ -42,7 +42,7 @@ This project comes with a container image which has all required host dependenci
 - Install podman::
 
 	sudo apt install podman
-	pip3 install podman-compose --user
+	pip3 install podman-compose==1.0.6 --user
 
 - Build a container::
 
@@ -54,6 +54,11 @@ This project comes with a container image which has all required host dependenci
         chmod a+rx repo
         ./repo init -u https://github.com/aesc-silicon/i2c-gpio-expander.git -b main -m manifest.xml
         ./repo sync
+
+- Podman might fail with `WARN[0000] Error validating CNI config file...` on Ubuntu systems. This can be fixed by manually installing a newer version of `containernetworking-plugins`::
+
+        curl -O http://archive.ubuntu.com/ubuntu/pool/universe/g/golang-github-containernetworking-plugins/containernetworking-plugins_1.1.1+ds1-3build1_amd64.deb
+        sudo dpkg -i containernetworking-plugins_1.1.1+ds1-3build1_amd64.deb
 
 Register Map
 ############

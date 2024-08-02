@@ -8,6 +8,7 @@
 	<project name="aesc-silicon/elements-zibal" path="modules/elements/zibal" revision="ea1c053f729260e1524368ec3b35376e803149a9" />
 	<project name="SpinalHDL/SpinalCrypto" path="modules/elements/SpinalCrypto" revision="27e0ceb430ac1b1896168f1a093d06a3d7c1cf7f" />
 	<project name="aesc-silicon/elements-vexriscv" path="modules/elements/vexriscv" revision="15e5d08322efa27accaaa9995e621bf629a1f4b4" />
-	<project name="dnltz/OpenROAD-flow-scripts" path="tools/OpenROAD-flow-scripts" revision="53a9b78f1f8e851c45d5e3cfa90e3bd854ca0cd7" />
+	<project name="dnltz/OpenROAD-flow-scripts" path="tools/OpenROAD-flow-scripts" revision="8337bcd473f0de82769523f4a5755ad8d79723d6" />
 	<project name="aesc-silicon/gdsiistl" path="tools/gdsiistl" revision="5884b20565a765f10918eedc0787a2beb6a682fd" />
+	<project name="dnltz/IHP-Open-PDK" path="pdks/IHP-Open-PDK" revision="d0d09a25b11fa285d834252096117ee46917b611" />
 </manifest>

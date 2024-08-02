@@ -19,5 +19,3 @@ services:
       - sbt-cache:/root/.sbt
       - cache:/root/.cache
     command: ["sleep", "infinity"]
-
-
