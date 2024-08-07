@@ -27,7 +27,8 @@ ELEMENTS_BASE=${ZIBAL_BASE}
 GCC=${INSTALL_PATH}/zephyr-sdk-0.16.5/riscv64-zephyr-elf/bin/riscv64-zephyr-elf
 
 sg13g2-sealring: KLAYOUT_HOME=${PDK_SG13G2_KLAYOUT_DIR}
-sg13g2-synthesize: KLAYOUT_HOME=${PDK_SG13G2_KLAYOUT_DIR}
+sg13g2-gds: KLAYOUT_HOME=${PDK_SG13G2_KLAYOUT_DIR}
+sg13g2-filler: KLAYOUT_HOME=${PDK_SG13G2_KLAYOUT_DIR}
 sg13g2-klayout: KLAYOUT_HOME=${PDK_SG13G2_KLAYOUT_DIR}
 sg13g2-drc-minimal: KLAYOUT_HOME=${PDK_SG13G2_KLAYOUT_DIR}
 sg13g2-drc-minimal-gui: KLAYOUT_HOME=${PDK_SG13G2_KLAYOUT_DIR}
@@ -71,16 +72,18 @@ sg13g2-sealring:
 		-rd width=${WIDTH} -rd height=${HEIGHT} \
 		-rd output=${BUILD_ROOT}/${SOC}/SG13G2/zibal/macros/sealring/sealring.gds.gz
 
-sg13g2-synthesize: sg13g2-sealring
+sg13g2-gds:
 	source ${OPENROAD_FLOW_ROOT}/../env.sh && make -C ${OPENROAD_FLOW_ROOT} DESIGN_CONFIG=${BUILD_ROOT}/${SOC}/SG13G2/zibal/SG13G2Top.mk
+
+sg13g2-filler:
 	klayout -n sg13g2 -zz -r ${KLAYOUT_HOME}/tech/scripts/filler.py \
 		-rd output_file=${OPENROAD_FLOW_ROOT}/results/ihp-sg13g2/SG13G2Top/base/6_final.gds \
 		${OPENROAD_FLOW_ROOT}/results/ihp-sg13g2/SG13G2Top/base/6_final.gds
 
+sg13g2-synthesize: sg13g2-sealring sg13g2-gds sg13g2-filler
 
 sg13g2-openroad:
 	openroad -gui <(echo read_db ${OPENROAD_FLOW_ROOT}/results/ihp-sg13g2/SG13G2Top/base/6_final.odb)
-
 sg13g2-klayout:
 	klayout -n sg13g2 -e ${OPENROAD_FLOW_ROOT}/results/ihp-sg13g2/SG13G2Top/base/6_final.gds
 
