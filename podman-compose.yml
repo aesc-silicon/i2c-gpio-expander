@@ -7,7 +7,7 @@ volumes:
 services:
   elemrv:
     build: .
-    image: elements:v1
+    image: elements:v1.0
     container_name: i2c-gpio-expander_container
     environment:
       - DISPLAY=${DISPLAY}
