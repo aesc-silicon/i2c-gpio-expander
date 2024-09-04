@@ -1,7 +1,7 @@
 Open Source I2C Gpio Expander
 =============================
 
-An Open Source I2C GPIO Expander written in SpinalHDL. Chip layouts for the SKY130 and SG13G2 PDKs are avaibale for the open RTL-to-GDSII tool OpenROAD.
+An Open Source I2C GPIO Expander written in SpinalHDL. Chip layouts for the SG13G2 PDKs are avaibale for the open RTL-to-GDSII tool OpenROAD.
 
 Features
 ########
@@ -113,25 +113,12 @@ The ASIC flow is similar to the FPGA one. Generate all required files at the beg
 
 .. code-block:: text
 
-    podman exec --workdir=$PWD -it i2c-gpio-expander_container bash -c 'make sky130-generate'
-    podman exec --workdir=$PWD -it i2c-gpio-expander_container bash -c 'make sky130-synthesize'
-
-Please check Known Issues in case the chip layout failed.
-
-Finally, open the chip layout and inspect the layout.
-
-.. code-block:: text
-
-    podman exec --workdir=$PWD -it i2c-gpio-expander_container bash -c 'make sky130-openroad'
-
-Similar targets are available for the IHP SG13G2 PDK:
-
-.. code-block:: text
-
     podman exec --workdir=$PWD -it i2c-gpio-expander_container bash -c 'make sg13g2-generate'
     podman exec --workdir=$PWD -it i2c-gpio-expander_container bash -c 'make sg13g2-synthesize'
 
-Open the design with either OpenROAD or Klayout:
+Please check Known Issues in case the chip layout failed.
+
+Finally, open the chip layout and inspect the layout with either OpenROAD or Klayout.
 
 .. code-block:: text
 
@@ -158,7 +145,7 @@ The following two run an enhanced set of rules.
 Known Issues
 ############
 
-* OpenROAD will always fail with "[ERROR] LEF Cell 'sky130_fd_pr__gendlring__example_559591418081' has no matching GDS/OAS cell. Cell will be empty." during the first time synthesizing the chip. Run `syk130-synthesize` again to finish the layout.
+-
 
 License
 #######
