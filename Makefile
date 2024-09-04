@@ -2,14 +2,18 @@ SHELL := /bin/bash
 
 .EXPORT_ALL_VARIABLES:
 
-INSTALL_PATH=/opt/elements/
+ifeq (,$(wildcard .local))
+INSTALL_PATH=/opt/elements
+else
+INSTALL_PATH=${PWD}
+endif
+
 PATH=${INSTALL_PATH}/oss-cad-suite/bin/:${INSTALL_PATH}/tools/magic/build/bin/:$(shell printenv PATH)
 BUILD_ROOT=${PWD}/build/
 OPENROAD_FLOW_ROOT=${PWD}/tools/OpenROAD-flow-scripts/flow
 CAD_ROOT=${INSTALL_PATH}/tools/magic/build/lib/
 OPENROAD_EXE=/usr/bin/openroad
 YOSYS_CMD=${INSTALL_PATH}/oss-cad-suite/bin/yosys
-PDK_SKY130_IO_DIR=${INSTALL_PATH}/pdks/share/pdk/sky130A/libs.ref/sky130_fd_io/
 # TODO use official PDK from container again after all changes got merged
 #PDK_SG13G2_KLAYOUT_DIR=${INSTALL_PATH}/pdks/IHP-Open-PDK/ihp-sg13g2/libs.tech/klayout/
 PDK_SG13G2_KLAYOUT_DIR=${PWD}/pdks/IHP-Open-PDK/ihp-sg13g2/libs.tech/klayout/
@@ -45,20 +49,6 @@ ecp5-synthesize: ecp5-generate
 
 ecp5-flash:
 	openFPGALoader -b ${OPENFPGALOADER_BOARD} ${BUILD_ROOT}/${SOC}/ECPIX5/fpga/ECPIX5Top.bit
-
-
-# Commands for SKY130 tape-out
-sky130-generate:
-	BOARD=Sky130 sbt "runMain i2cgpioexpander.boards.Sky130Generate"
-
-sky130-synthesize:
-	source ${OPENROAD_FLOW_ROOT}/../env.sh && make -C ${OPENROAD_FLOW_ROOT} DESIGN_CONFIG=${BUILD_ROOT}/${SOC}/Sky130/zibal/Sky130Top.mk
-
-sky130-openroad:
-	openroad -gui <(echo read_db ${OPENROAD_FLOW_ROOT}/results/sky130hd/Sky130Top/base/6_final.odb)
-
-sky130-magic:
-	magic -T sky130B
 
 
 # Commands for SG13G2 tape-out
