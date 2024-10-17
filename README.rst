@@ -1,35 +1,38 @@
 Open Source I2C Gpio Expander
 =============================
 
-An Open Source I2C GPIO Expander written in SpinalHDL. Chip layouts for the SG13G2 PDKs are avaibale for the open RTL-to-GDSII tool OpenROAD.
+This project provides an open-source I2C GPIO Expander, fully written in SpinalHDL, and designed for use with the OpenROAD toolchain. The expander is compatible with the SG13G2 PDK, offering a complete open-source solution from RTL to GDSII without relying on proprietary tools.
 
 Features
 ########
 
-* Fully written in SpinalHDL. No line of Verilog/VHDL.
-* Only Open Source tools and no proprietary vendor tools.
+* **SpinalHDL Implementation**: The entire design is written in SpinalHDL, with no Verilog or VHDL code.
+* **Open-Source Toolchain**: The project uses only open-source tools, avoiding proprietary software.
 
-  * Design verification with Yosys+nextpnr.
-  * Chip layout with OpenROAD.
+  * **Design Verification**: Performed using Yosys and nextpnr.
 
-* I2C Fast Mode with 400 kbit/s
-* Configurable GPIO width
-* Configurable address width
+  * **Chip Layout**: Achieved with OpenROAD.
+
+* **I2C Fast Mode**: Supports I2C communication at 400 kbit/s.
+* **Configurable GPIO Width**: Flexible design allows customizable GPIO widths based on requirements.
+* **Configurable Address Width**: The I2C address width can also be configured as needed.
+
+This project is ideal for those looking to implement a customizable I2C GPIO expander with full support from open-source tools and platforms.
 
 Layout Rendering
 #################
 
-Rendering of the standard cells and some IO cells.
+Rendering of the standard cells alongside some I/O cells.
 
 .. image:: images/chip_logic.png
   :alt: I2C Gpio Expander Chip Layout
 
-Closer look at the power/ground mesh and some cells.
+A detailed view of the power/ground mesh and selected cells.
 
 .. image:: images/chip_logic_closer.png
   :alt: I2C Gpio Expander Chip Layout
 
-Power distribution network. The power/ground IO cells on the left side are connected to the power/ground ring in the center. The power/ground mesh on the right side connects the ring with each cell.
+The power distribution network: Power and ground I/O cells on the left connect to the central power/ground ring, which distributes through a mesh on the right to supply each cell.
 
 .. image:: images/chip_power_network.png
   :alt: I2C Gpio Expander Chip Layout
