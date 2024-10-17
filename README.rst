@@ -150,7 +150,7 @@ Known Issues
 License
 #######
 
-Copyright (c) 2024 aesc silicon. Released under the `MIT license`_.
+Copyright (c) 2024 aesc silicon. Released under the `GPLv3 license`_.
 
-.. _MIT license: COPYING.MIT
+.. _GPLv3 license: COPYING.GPLv3
 .. _zephyr/README: zephyr/README.rst
