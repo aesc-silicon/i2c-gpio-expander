@@ -9,3 +9,4 @@ target/
 tools/
 .repo/
 repo
+*.blend*
