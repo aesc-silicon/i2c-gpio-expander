@@ -22,7 +22,12 @@ This project is ideal for those looking to implement a customizable I2C GPIO exp
 Layout Rendering
 #################
 
-Rendering of the standard cells alongside some I/O cells.
+Rendering of the entire I2C GPIO Expander.
+
+.. image:: images/chip_overview.png
+  :alt: I2C Gpio Expander Chip Layout
+
+Standard cells alongside some I/O cells.
 
 .. image:: images/chip_logic.png
   :alt: I2C Gpio Expander Chip Layout
