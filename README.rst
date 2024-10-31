@@ -49,8 +49,10 @@ This project comes with a container image which has all required host dependenci
 
 - Install podman::
 
-       sudo apt install podman
-       pip3 install podman-compose==1.0.6 --user
+       sudo apt install podman virtualenv
+       virtualenv venv
+       source venv/bin/activate
+       pip3 install podman-compose==1.0.6
 
 - Build a container::
 
