@@ -10,5 +10,5 @@
 	<project name="aesc-silicon/elements-vexriscv" path="modules/elements/vexriscv" revision="15e5d08322efa27accaaa9995e621bf629a1f4b4" />
 	<project name="The-OpenROAD-Project/OpenROAD-flow-scripts" path="tools/OpenROAD-flow-scripts" revision="d617deb35b6823c03846bacfefbd838f49cff437" />
 	<project name="aesc-silicon/gdsiistl" path="tools/gdsiistl" revision="5884b20565a765f10918eedc0787a2beb6a682fd" />
-	<project name="dnltz/IHP-Open-PDK" sync-s="true" path="pdks/IHP-Open-PDK" revision="53fa48007667288d965ffa0cd310d2926a76f493" />
+	<project name="dnltz/IHP-Open-PDK" sync-s="true" path="pdks/IHP-Open-PDK" revision="a676ed92075974f63947fa31eb70fd3f81d8d523" />
 </manifest>
