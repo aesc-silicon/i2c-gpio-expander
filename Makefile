@@ -15,8 +15,9 @@ CAD_ROOT=${INSTALL_PATH}/tools/magic/build/lib/
 OPENROAD_EXE=/usr/bin/openroad
 YOSYS_CMD=${INSTALL_PATH}/oss-cad-suite/bin/yosys
 # TODO use official PDK from container again after all changes got merged
-#PDK_SG13G2_KLAYOUT_DIR=${INSTALL_PATH}/pdks/IHP-Open-PDK/ihp-sg13g2/libs.tech/klayout/
-PDK_SG13G2_KLAYOUT_DIR=${PWD}/pdks/IHP-Open-PDK/ihp-sg13g2/libs.tech/klayout/
+#PDK_SG13G2_ROOT=${INSTALL_PATH}/pdks/IHP-Open-PDK/
+PDK_SG13G2_ROOT=${PWD}/pdks/IHP-Open-PDK/
+PDK_SG13G2_KLAYOUT_DIR=${PDK_SG13G2_ROOT}/ihp-sg13g2/libs.tech/klayout/
 
 SOC=I2cGpioExpander
 FPGA_FAMILY=ecp5
@@ -31,8 +32,11 @@ ELEMENTS_BASE=${ZIBAL_BASE}
 GCC=${INSTALL_PATH}/zephyr-sdk-0.16.5/riscv64-zephyr-elf/bin/riscv64-zephyr-elf
 
 sg13g2-sealring: KLAYOUT_HOME=${PDK_SG13G2_KLAYOUT_DIR}
+sg13g2-synthesize: YOSYS_EXE=${INSTALL_PATH}/oss-cad-suite/bin/yosys
 sg13g2-gds: KLAYOUT_HOME=${PDK_SG13G2_KLAYOUT_DIR}
 sg13g2-filler: KLAYOUT_HOME=${PDK_SG13G2_KLAYOUT_DIR}
+sg13g2-filler: PDK_ROOT=${PDK_SG13G2_ROOT}
+sg13g2-filler: PDK=ihp-sg13g2
 sg13g2-klayout: KLAYOUT_HOME=${PDK_SG13G2_KLAYOUT_DIR}
 sg13g2-drc-minimal: KLAYOUT_HOME=${PDK_SG13G2_KLAYOUT_DIR}
 sg13g2-drc-minimal-gui: KLAYOUT_HOME=${PDK_SG13G2_KLAYOUT_DIR}
@@ -62,15 +66,13 @@ sg13g2-sealring:
 		-rd width=${WIDTH} -rd height=${HEIGHT} \
 		-rd output=${BUILD_ROOT}/${SOC}/SG13G2/zibal/macros/sealring/sealring.gds.gz
 
-sg13g2-gds:
+sg13g2-gds: sg13g2-sealring
 	source ${OPENROAD_FLOW_ROOT}/../env.sh && make -C ${OPENROAD_FLOW_ROOT} DESIGN_CONFIG=${BUILD_ROOT}/${SOC}/SG13G2/zibal/SG13G2Top.mk
 
 sg13g2-filler:
 	klayout -n sg13g2 -zz -r ${KLAYOUT_HOME}/tech/scripts/filler.py \
 		-rd output_file=${OPENROAD_FLOW_ROOT}/results/ihp-sg13g2/SG13G2Top/base/6_final.gds \
 		${OPENROAD_FLOW_ROOT}/results/ihp-sg13g2/SG13G2Top/base/6_final.gds
-
-sg13g2-synthesize: sg13g2-sealring sg13g2-gds sg13g2-filler
 
 sg13g2-openroad:
 	openroad -gui <(echo read_db ${OPENROAD_FLOW_ROOT}/results/ihp-sg13g2/SG13G2Top/base/6_final.odb)
@@ -89,9 +91,14 @@ sg13g2-drc-maximal:
 sg13g2-drc-maximal-gui:
 	klayout -n sg13g2 -e ${OPENROAD_FLOW_ROOT}/results/ihp-sg13g2/SG13G2Top/base/6_final.gds -m ${KLAYOUT_HOME}/tech/drc/sg13g2_maximal.lyrdb
 
+sg13g2-synthesize: sg13g2-sealring sg13g2-gds sg13g2-filler
+sg13g2-tapeout: sg13g2-synthesize sg13g2-drc-maximal
+
 # Misc.
-clean:
+clean-orfs:
 	rm -rf ${OPENROAD_FLOW_ROOT}/results/
 	rm -rf ${OPENROAD_FLOW_ROOT}/log/
 	rm -rf ${OPENROAD_FLOW_ROOT}/objects/
+
+clean: clean-orfs
 	rm -rf ${BUILD_ROOT}
