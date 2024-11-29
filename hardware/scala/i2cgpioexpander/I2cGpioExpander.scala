@@ -22,7 +22,7 @@ object I2cGpioExpander {
   object Parameter {
     def default = Parameter(
       I2cCtrl.Parameter(permission = null, memory = null, io = I2c.Parameter(1)),
-      GpioCtrl.Parameter.full(8)
+      GpioCtrl.Parameter.default(8)
     )
   }
 
