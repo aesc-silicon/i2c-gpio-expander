@@ -16,6 +16,4 @@ services:
       - ivy2-cache:/root/.ivy2
       - sbt-cache:/root/.sbt
       - cache:/root/.cache
-      - $XAUTHORITY:$XAUTHORITY:ro
-      - /tmp/.X11-unix:/tmp/.X11-unix:ro
     command: ["sleep", "infinity"]
