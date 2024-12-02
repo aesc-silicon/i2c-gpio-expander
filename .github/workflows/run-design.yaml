@@ -22,7 +22,7 @@ jobs:
 
     - name: Prepare the project
       run: |
-        task install branch=${{ github.head_ref }}
+        task install branch=${{ github.head_ref || 'main' }}
 
     - name: Prepare files
       run: |
