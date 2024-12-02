@@ -80,7 +80,7 @@ Start by generating the necessary files for the ECPIX5 Board, then synthesize th
 
 .. code-block:: text
 
-    task fpga-assets fpga-synthesize
+    task fpga-prepare fpga-synthesize
 
 Next, program the ECP5 FPGA with the synthesized bitstream.
 
