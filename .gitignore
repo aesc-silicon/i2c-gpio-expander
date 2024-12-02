@@ -8,5 +8,6 @@ simWorkspace/
 target/
 tools/
 .repo/
+.task/
 repo
 *.blend*

@@ -51,22 +51,11 @@ RUN curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E4
 RUN chmod 644 /etc/apt/trusted.gpg.d/scalasbt-release.gpg
 RUN apt-get update && apt-get install -y sbt
 
-# Zephyr SDK
-
-ARG ZEPHYR_SDK_RELEASE=0.16.5
-
-WORKDIR /opt/elements/
-
-RUN wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${ZEPHYR_SDK_RELEASE}/zephyr-sdk-${ZEPHYR_SDK_RELEASE}_linux-x86_64.tar.xz && \
-    wget -O - https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${ZEPHYR_SDK_RELEASE}/sha256.sum | shasum --check --ignore-missing && \
-    tar xvf zephyr-sdk-${ZEPHYR_SDK_RELEASE}_linux-x86_64.tar.xz && \
-    rm zephyr-sdk-${ZEPHYR_SDK_RELEASE}_linux-x86_64.tar.xz
-
 # OSS Cad Suite
 
 ARG OSS_CAD_SUITE_YEAR=2024
-ARG OSS_CAD_SUITE_MONTH=07
-ARG OSS_CAD_SUITE_DAY=17
+ARG OSS_CAD_SUITE_MONTH=11
+ARG OSS_CAD_SUITE_DAY=22
 ARG OSS_CAD_SUITE_DATE="${OSS_CAD_SUITE_YEAR}-${OSS_CAD_SUITE_MONTH}-${OSS_CAD_SUITE_DAY}"
 ARG OSS_CAD_SUITE_STAMP="${OSS_CAD_SUITE_YEAR}${OSS_CAD_SUITE_MONTH}${OSS_CAD_SUITE_DAY}"
 
@@ -95,21 +84,5 @@ RUN wget https://github.com/Precision-Innovations/OpenROAD/releases/download/${O
 RUN wget https://www.klayout.org/downloads/Ubuntu-22/klayout_${KLAYOUT_VERSION}-1_amd64.deb && \
     sudo apt install -y ./klayout_${KLAYOUT_VERSION}-1_amd64.deb && \
     rm klayout_${KLAYOUT_VERSION}-1_amd64.deb
-
-WORKDIR /opt/elements/tools
-
-RUN git clone --progress https://github.com/${OPENROAD_FLOW_ORGA}/OpenROAD-flow-scripts.git && \
-    cd OpenROAD-flow-scripts && \
-    git checkout ${OPENROAD_FLOW_COMMIT}
-
-# IHP Open PDK
-
-ARG IHP_PDK_VERSION=4c6508d03a3078b21c737d04fae5dccec9aa590f
-
-WORKDIR /opt/elements/pdks
-
-RUN git clone --progress https://github.com/IHP-GmbH/IHP-Open-PDK.git && \
-    cd IHP-Open-PDK && \
-    git checkout ${IHP_PDK_VERSION}
 
 WORKDIR /opt/elements/
