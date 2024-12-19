@@ -32,7 +32,7 @@ tasks:
       - venv/bin/pip3 install podman-compose==1.0.6
       - curl https://storage.googleapis.com/git-repo-downloads/repo > repo
       - chmod a+rx repo
-      - ./repo init -u https://github.com/aesc-silicon/i2c-gpio-expander.git -b {{.branch}} -m manifest.xml
+      - ./repo init -u https://github.com/aesc-silicon/i2c-gpio-expander.git -b {{if .branch}}{{.branch}}{{else}}main{{end}} -m manifest.xml
 
   build-container:
     desc: Creates a container with all necessary host requirements pre-installed.
