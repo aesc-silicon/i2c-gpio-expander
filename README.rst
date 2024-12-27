@@ -60,6 +60,9 @@ This project uses Taskfile as its task runner tool. You can install Taskfile usi
 
         task -a
 
+**Note:** By default, the X-Server is required for the `view-klayout` and `view-openroad` tasks. On headless systems, you can bypass this requirement by adding `IS_HEADLESS=true` before the task command. This is particularly useful when accessing the system via SSH, as it allows you to run the container without the need for X-Server.
+
+
 Register Map
 ############
 
