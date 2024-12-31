@@ -159,4 +159,3 @@ License
 Copyright (c) 2024 aesc silicon. Released under the `GPLv3 license`_.
 
 .. _GPLv3 license: COPYING.GPLv3
-.. _zephyr/README: zephyr/README.rst
