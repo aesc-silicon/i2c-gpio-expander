@@ -1,9 +1,7 @@
-package i2cgpioexpander.boards
+package i2cgpioexpander
 import spinal.core._
 import spinal.core.sim._
 import spinal.lib._
-
-import i2cgpioexpander.I2cGpioExpander
 
 import nafarr.blackboxes.skywater.sky130._
 

@@ -57,7 +57,7 @@ tasks:
       - task: lib-generate
         vars:
           board: "ECPIX5"
-          soc: "i2cgpioexpander.boards.ECPIX5Generate"
+          package: "i2cgpioexpander"
   fpga-synthesize:
     desc: Generates the FPGA bitstream by synthesizing the design.
     cmds:
@@ -78,7 +78,7 @@ tasks:
       - task: lib-generate
         vars:
           board: "SG13G2"
-          soc: "i2cgpioexpander.boards.SG13G2Generate"
+          package: "i2cgpioexpander"
       - task: lib-sealring
         vars:
           board: "SG13G2"
