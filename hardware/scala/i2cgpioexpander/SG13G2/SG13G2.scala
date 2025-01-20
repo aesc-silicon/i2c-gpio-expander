@@ -82,8 +82,8 @@ object SG13G2Generate extends ElementsApp {
     val io = OpenROADTools.IHP.Io(elementsConfig)
     io.addPad("east", 0, "sg13g2_IOPadVdd")
     io.addPad("east", 1, "sg13g2_IOPadVss")
-    io.addPad("west", 3, "sg13g2_IOPadVss")
-    io.addPad("west", 4, "sg13g2_IOPadVdd")
+    io.addPad("west", 3, "sg13g2_IOPadIOVss")
+    io.addPad("west", 4, "sg13g2_IOPadIOVdd")
     io.generate(top.io)
 
     val pdn = OpenROADTools.IHP.Pdn(elementsConfig)
