@@ -5,8 +5,8 @@ on:
     branches: [ main ]
     paths:
       - 'build.sbt'
-      - '.github/'
-      - 'hardware/'
+      - '.github/**'
+      - 'hardware/**'
       - 'manifest.xml'
       - 'podmnan-compose*yml'
       - 'Taskfile.yml'
