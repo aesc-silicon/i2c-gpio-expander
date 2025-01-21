@@ -43,4 +43,6 @@ jobs:
 
     - name: RUN maximal DRC
       run: |
-        IS_HEADLESS=true task run-drc
+        IS_HEADLESS=true task run-drc > drc.log
+        grep -v '0 error(s)' drc.log
+        grep 'Number of DRC errors: 0' drc.log

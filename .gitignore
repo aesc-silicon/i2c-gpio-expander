@@ -11,3 +11,4 @@ tools/
 .task/
 repo
 *.blend*
+drc.log
