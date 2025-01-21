@@ -1,0 +1,39 @@
+name: Check Design Flow from RTL to GDS
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo snap install task --classic
+        sudo apt install virtualenv
+
+    - name: Prepare the project
+      run: |
+        task install nightly=true
+
+    - name: Prepare files
+      run: |
+        IS_HEADLESS=true task prepare
+
+    - name: Generate layout
+      run: |
+        IS_HEADLESS=true task layout
+
+    - name: Add metal fill
+      run: |
+        IS_HEADLESS=true task filler
+
+    - name: RUN maximal DRC
+      run: |
+        IS_HEADLESS=true task run-drc
