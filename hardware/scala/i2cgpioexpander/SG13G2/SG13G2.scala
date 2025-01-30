@@ -72,7 +72,7 @@ object SG13G2Generate extends ElementsApp {
     config.generate(
       OpenROADTools.PDKs.IHP.sg13g2,
       (0.0, 0.0, 1050, 1050),
-      (425.28, 427.16, 631.2, 630.24)
+      (425.28, 427.14, 631.2, 630.24)
     )
 
     val sdc = OpenROADTools.IHP.Sdc(elementsConfig)
