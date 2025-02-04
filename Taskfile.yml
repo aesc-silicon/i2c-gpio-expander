@@ -97,28 +97,39 @@ tasks:
       - task: lib-filler
         vars:
           board: "SG13G2"
+
   run-drc:
     desc: Performs Design Rule Checks and reports violations; use 'level=minimal' for a basic check.
     cmds:
       - task: lib-run-drc
         vars:
           board: "SG13G2"
+
   view-drc:
     desc: Displays DRC results in KLayout; 'level=minimal' opens minimal deck results.
     cmds:
       - task: lib-view-drc
         vars:
           board: "SG13G2"
+
   view-openroad:
     desc: Loads the layout into OpenROAD for further analysis or modification.
     cmds:
       - task: lib-view-openroad
         vars:
           board: "SG13G2"
+
   view-klayout:
     desc: Opens the chip layout in KLayout for inspection.
     cmds:
       - task: lib-view-klayout
+        vars:
+          board: "SG13G2"
+
+  check-logs:
+    desc: Checks the build directory for warnings or errors in the logs.
+    cmds:
+      - task: lib-check-logs
         vars:
           board: "SG13G2"
 
@@ -129,3 +140,4 @@ tasks:
       - task: layout
       - task: filler
       - task: run-drc
+      - task: check-logs
