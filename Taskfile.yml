@@ -7,8 +7,9 @@ includes:
     flatten: true
 
 env:
-  CONTAINER_NAME: i2c-gpio-expander_container
-  SOC: I2cGpioExpander
+  package: "i2cgpioexpander"
+  SOC: "{{ .package }}"
+  CONTAINER_NAME: i2c-devices_container
   FPGA_FAMILY: ecp5
   FPGA_DEVICE: um5g-45k
   FPGA_PACKAGE: CABGA554
@@ -58,7 +59,6 @@ tasks:
       - task: lib-generate
         vars:
           board: "ECPIX5"
-          package: "i2cgpioexpander"
   fpga-synthesize:
     desc: Generates the FPGA bitstream by synthesizing the design.
     cmds:
@@ -79,7 +79,6 @@ tasks:
       - task: lib-generate
         vars:
           board: "SG13G2"
-          package: "i2cgpioexpander"
       - task: lib-sealring
         vars:
           board: "SG13G2"

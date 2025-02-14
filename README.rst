@@ -20,7 +20,7 @@ Features
 This project is an excellent choice for those seeking a customizable I2C GPIO expander with full support from open-source tools and platforms.
 
 Layout Rendering
-#################
+################
 
 A rendering of the complete I2C GPIO Expander layout.
 

@@ -7,7 +7,7 @@ volumes:
 services:
   elements:
     image: dnltz/elements:v1.2
-    container_name: i2c-gpio-expander_container
+    container_name: i2c-devices_container
     environment:
       - DISPLAY=${DISPLAY}
     volumes:
