@@ -4,11 +4,11 @@
 
 	<default remote="github" sync-j="8" />
 
-	<project name="aesc-silicon/elements-nafarr" path="modules/elements/nafarr" revision="627f70ec179a7689fa7e10a181f1e20b2296d299" />
-	<project name="aesc-silicon/elements-zibal" path="modules/elements/zibal" revision="d167682f6c61d342796cb459831057ac43a7c1bb" />
+	<project name="aesc-silicon/elements-nafarr" path="modules/elements/nafarr" revision="58f74f6bbfe803d22d973214aa87d8444c1b4f99" />
+	<project name="aesc-silicon/elements-zibal" path="modules/elements/zibal" revision="d38742b03e0b944ccadf993cba67db53b868c30d" />
 	<project name="SpinalHDL/SpinalCrypto" path="modules/elements/SpinalCrypto" revision="f2a4ae9db5e9434c5589d0651efec8719103498e" />
 	<project name="aesc-silicon/elements-vexriscv" path="modules/elements/vexriscv" revision="7f2bccbef256b3ad40fb8dc8ba08a266f9c6256b" />
 	<project name="aesc-silicon/gdsiistl" path="tools/gdsiistl" revision="5884b20565a765f10918eedc0787a2beb6a682fd" />
-	<project name="dnltz/OpenROAD-flow-scripts" path="tools/OpenROAD-flow-scripts" revision="3363ffd3c2f677c5e494b1515e3adca356b60896" />
+	<project name="dnltz/OpenROAD-flow-scripts" path="tools/OpenROAD-flow-scripts" revision="bac5c5f5379f6debd77c94626f21805a2486b0cf" />
 	<project name="IHP-GmbH/IHP-Open-PDK" sync-s="true" path="pdks/IHP-Open-PDK" revision="dev" />
 </manifest>
