@@ -65,30 +65,31 @@ case class SG13G2Top(p: I2cGpioExpander.Parameter, resetDelay: Int) extends Comp
   }
 }
 object SG13G2Generate extends ElementsApp {
-  elementsConfig.genASICSpinalConfig.generateVerilog {
-    val top = SG13G2Top(I2cGpioExpander.Parameter.default.copy(addressWidth=3), 128)
-
-    val config = OpenROADTools.IHP.Config(elementsConfig)
-    config.generate(
-      OpenROADTools.PDKs.IHP.sg13g2,
-      (0.0, 0.0, 1050, 1050),
-      (425.28, 427.14, 631.2, 630.24)
-    )
-
-    val sdc = OpenROADTools.IHP.Sdc(elementsConfig)
-    sdc.addClock(top.io.clock.PAD, 50 MHz, "clk_core")
-    sdc.generate(top.io)
-
-    val io = OpenROADTools.IHP.Io(elementsConfig)
-    io.addPad("east", 0, "sg13g2_IOPadVdd")
-    io.addPad("east", 1, "sg13g2_IOPadVss")
-    io.addPad("west", 3, "sg13g2_IOPadIOVss")
-    io.addPad("west", 4, "sg13g2_IOPadIOVdd")
-    io.generate(top.io)
-
-    val pdn = OpenROADTools.IHP.Pdn(elementsConfig)
-    pdn.generate()
-
+  val report = elementsConfig.genASICSpinalConfig.generateVerilog {
+    val top = SG13G2Top(I2cGpioExpander.Parameter.default.copy(addressWidth = 3), 128)
     top
   }
+
+  val i2cDevice = OpenROADTools.IHP.Config(elementsConfig, OpenROADTools.PDKs.IHP.sg13g2, true)
+  i2cDevice.dieArea = (0, 0, 147.84, 147.42)
+  i2cDevice.coreArea = (15.36, 15.12, 132, 132.3)
+  i2cDevice.pdnRingWidth = 3.0
+  i2cDevice.pdnRingSpace = 2.0
+  i2cDevice.addClock(report.toplevel.clockCtrl.mainClockDomain.clock, 50 MHz)
+  i2cDevice.generate("I2cDeviceCtrl")
+
+  val chip = OpenROADTools.IHP.Config(elementsConfig, OpenROADTools.PDKs.IHP.sg13g2)
+  chip.dieArea = (0, 0, 1050.24, 1050.84)
+  chip.coreArea = (351.36, 351.54, 699.84, 699.3)
+  chip.hasIoRing = true
+  chip.addBlock("I2cDeviceCtrl")
+  chip.addClock(report.toplevel.io.clock.PAD, 50 MHz, "clk_core")
+  chip.io = Some(report.toplevel.io)
+  chip.pdnRingWidth = 8.0
+  chip.pdnRingSpace = 5.0
+  chip.addPad("east", 0, "sg13g2_IOPadVdd")
+  chip.addPad("east", 1, "sg13g2_IOPadVss")
+  chip.addPad("west", 3, "sg13g2_IOPadIOVss")
+  chip.addPad("west", 4, "sg13g2_IOPadIOVdd")
+  chip.generate
 }
