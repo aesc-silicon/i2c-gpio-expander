@@ -12,7 +12,7 @@ object I2cGpioExpander {
   def apply(p: Parameter) = I2cGpioExpander(p)
 
   case class Parameter(
-      i2c: I2cCtrl.Parameter,
+      i2c: I2cDeviceCtrl.Parameter,
       gpio: GpioCtrl.Parameter,
       addressWidth: Int = 3,
       deviceAddress: Int = 6,
@@ -21,7 +21,7 @@ object I2cGpioExpander {
   ) {}
   object Parameter {
     def default = Parameter(
-      I2cCtrl.Parameter(permission = null, memory = null, io = I2c.Parameter(1)),
+      I2cDeviceCtrl.Parameter(I2c.Parameter(1)),
       GpioCtrl.Parameter.default(8)
     )
   }
@@ -49,6 +49,7 @@ object I2cGpioExpander {
       }
 
       i2cCtrl.io.config.clockDivider := U(p.clockDivider)
+      i2cCtrl.io.config.clockDividerReload := True
       i2cCtrl.io.config.timeout := U(p.timeoutCycles)
       i2cCtrl.io.config.deviceAddr := B(p.deviceAddress, 7 - p.addressWidth bit) ##
         latchedAddress
@@ -122,7 +123,7 @@ object I2cGpioExpander {
             when(i2cCtrl.io.cmd.payload.read) {
               state := State.READ
             } otherwise {
-              when (i2cCtrl.io.cmd.payload.reg) {
+              when(i2cCtrl.io.cmd.payload.reg) {
                 state := State.REG
               } otherwise {
                 state := State.WRITE
