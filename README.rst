@@ -117,6 +117,12 @@ Earlier stages of the layout process can also be reviewed in OpenROAD by passing
 
     task view-openroad stage=6_final
 
+Additionally, you can view a specific block from the hierarchical flow generation by providing the ``block`` argument.
+
+.. code-block:: text
+
+    task view-openroad block=I2cDeviceCtrl
+
 Design Rule Checks
 ##################
 
