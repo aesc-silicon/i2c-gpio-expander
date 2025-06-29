@@ -6,7 +6,7 @@ volumes:
   cache:
 services:
   elements:
-    image: dnltz/elements:v1.2
+    image: docker.io/dnltz/elements:v1.2
     container_name: i2c-gpio-expander_container
     environment:
       - DISPLAY=${DISPLAY}
