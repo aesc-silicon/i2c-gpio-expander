@@ -1,4 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+SPDX-FileCopyrightText: 2025 aesc silicon
+
+SPDX-License-Identifier: CERN-OHL-S-2.0
+-->
+
 <manifest>
 	<remote fetch="https://github.com" name="github" />
 
