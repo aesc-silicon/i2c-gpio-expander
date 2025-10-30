@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025 aesc silicon
+//
+// SPDX-License-Identifier: CERN-OHL-S-2.0
+
 package i2cgpioexpander
 import spinal.core._
 import spinal.core.sim._
