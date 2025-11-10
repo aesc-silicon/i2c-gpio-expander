@@ -5,7 +5,7 @@
 language: generic
 
 os: linux
-dist: jammy
+dist: noble
 
 # Only run on pull requests to main branch
 branches:
