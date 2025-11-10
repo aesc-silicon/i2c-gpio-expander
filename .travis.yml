@@ -19,8 +19,14 @@ timeout: 3600
 if: type IN (pull_request, cron)
 
 install:
-  # Install dependencies
+  # Install Podman
+  - sudo apt-get update
+  - sudo apt-get install -y podman uidmap slirp4netns
+
+  # Disable color
   - git config --global color.ui false
+
+  # Install other dependencies
   - sudo snap install task --classic
   - sudo apt-get update
   - sudo apt-get install -y virtualenv
