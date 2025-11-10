@@ -15,6 +15,9 @@ branches:
 # Set timeout to 60 minutes
 timeout: 3600
 
+# Conditional logic for PRs vs Cron
+if: type IN (pull_request, cron)
+
 install:
   # Install dependencies
   - sudo snap install task --classic
@@ -22,8 +25,16 @@ install:
   - sudo apt-get install -y virtualenv
 
 script:
+  # Use appropriate branch: PR branch for PRs, main for cron
+  - |
+    if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then
+      BRANCH="main"
+    else
+      BRANCH="${TRAVIS_PULL_REQUEST_BRANCH:-main}"
+    fi
+
   # Prepare the project
-  - task install branch=${TRAVIS_PULL_REQUEST_BRANCH:-main}
+  - task install branch=${BRANCH}
 
   # Prepare files
   - IS_HEADLESS=true task prepare
@@ -40,4 +51,8 @@ script:
   - grep 'KLayout DRC Check Passed' drc.log
 
 notifications:
-  email: false
+  email:
+    on_success: never
+    on_failure: always
+    recipients:
+      - nightly.reports@aesc-silicon.de
