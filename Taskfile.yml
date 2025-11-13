@@ -25,10 +25,10 @@ env:
   OPENROAD_FLOW_ROOT: "{{ .PWD }}/tools/OpenROAD-flow-scripts/flow"
 
 vars:
-  CONTAINER_NAME: i2c-gpio-expander_container
-  SOC: I2cGpioExpander
+  SOC: '{{.SOC | default "I2cGpioExpander"}}'
   package:
     sh: echo "{{.SOC}}" | tr '[:upper:]' '[:lower:]' | tr '-' '_'
+  CONTAINER_NAME: i2c-gpio-expander_container
   CONTAINER_ENV: " \
     -e SOC={{ .SOC }} \
     -e FPGA_FAMILY={{ .FPGA_FAMILY }} \
