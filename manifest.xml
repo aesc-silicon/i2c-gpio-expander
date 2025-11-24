@@ -17,5 +17,5 @@ SPDX-License-Identifier: CERN-OHL-S-2.0
 	<project name="aesc-silicon/elements-vexriscv" path="modules/elements/vexriscv" revision="7f2bccbef256b3ad40fb8dc8ba08a266f9c6256b" />
 	<project name="aesc-silicon/gdsiistl" path="tools/gdsiistl" revision="5884b20565a765f10918eedc0787a2beb6a682fd" />
 	<project name="The-OpenROAD-Project/OpenROAD-flow-scripts" path="tools/OpenROAD-flow-scripts" revision="a53c2e0d12c70105245f203d555f9628c71f245a" />
-	<project name="IHP-GmbH/IHP-Open-PDK" sync-s="true" path="pdks/IHP-Open-PDK" revision="5fb50772cfe7c957a49eadb80c25aae3def38fe0" />
+	<project name="IHP-GmbH/IHP-Open-PDK" sync-s="true" path="pdks/IHP-Open-PDK" revision="bbee036961439743e598a13674fac2f10d43cc4d" />
 </manifest>
