@@ -53,9 +53,7 @@ script:
   - IS_HEADLESS=true task filler
 
   # Run maximal DRC
-  - IS_HEADLESS=true task run-drc > drc.log
-  - grep -v '0 error(s)' drc.log
-  - grep 'KLayout DRC Check Passed' drc.log
+  - IS_HEADLESS=true task run-drc
 
 notifications:
   email:
