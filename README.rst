@@ -166,6 +166,6 @@ Known Issues
 License
 #######
 
-Copyright (c) 2024 aesc silicon. Released under the `GPLv3 license`_.
+Copyright (c) 2025 aesc silicon. Released under the `CERN-OHL-W-2.0`_ license.
 
-.. _GPLv3 license: COPYING.GPLv3
+.. _CERN-OHL-W-2.0: LICENSES/CERN-OHL-W-2.0.txt
