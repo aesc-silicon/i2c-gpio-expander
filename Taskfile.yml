@@ -56,7 +56,7 @@ tasks:
   build-container:
     desc: Creates a container with all necessary host requirements pre-installed.
     cmds:
-      - venv/bin/podman-compose build
+      - venv/bin/podman-compose pull
   repo-sync:
     desc: Downloads and synchronizes all required dependencies.
     cmds:
