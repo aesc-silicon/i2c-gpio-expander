@@ -31,12 +31,12 @@ A rendering of the complete I2C GPIO Expander layout.
 .. image:: images/chip_overview.png
   :alt: I2C GPIO Expander Chip Layout
 
-View of standard cells alongside some I/O cells.
+View of a macro block alongside some I/O cells.
 
 .. image:: images/chip_logic.png
   :alt: I2C GPIO Expander Chip Layout
 
-A closer look at the power/ground mesh and selected cells.
+A closer look at the power/ground mesh and standard cells.
 
 .. image:: images/chip_logic_closer.png
   :alt: I2C GPIO Expander Chip Layout
