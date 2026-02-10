@@ -16,9 +16,7 @@ env:
   FPGA_PACKAGE: CABGA554
   FPGA_FREQUENCY: 50
   OPENFPGALOADER_BOARD: ecpix5_r03
-  PDK: ihp-sg13g2
   PDK_ROOT: "{{ .PWD }}/pdks/IHP-Open-PDK/"
-  KLAYOUT_HOME: "{{ .PWD }}/pdks/IHP-Open-PDK/ihp-sg13g2/libs.tech/klayout/"
   NAFARR_BASE: "{{ .PWD }}/modules/elements/nafarr/"
   ZIBAL_BASE: "{{ .PWD }}/modules/elements/zibal/"
   BUILD_ROOT: "{{ .PWD }}/build/"
@@ -26,8 +24,12 @@ env:
 
 vars:
   SOC: '{{.SOC | default "I2cGpioExpander"}}'
+  TECH: '{{.TECH | default "SG13G2"}}'
   package:
     sh: echo "{{.SOC}}" | tr '[:upper:]' '[:lower:]' | tr '-' '_'
+  PDK:
+    sh: echo "ihp-{{.TECH}}" | tr '[:upper:]' '[:lower:]'
+  KLAYOUT_HOME: "{{.PWD}}/pdks/IHP-Open-PDK/{{.PDK}}/libs.tech/klayout/"
   CONTAINER_NAME: i2c-gpio-expander_container
   CONTAINER_ENV: " \
     -e SOC={{ .SOC }} \
@@ -109,73 +111,80 @@ tasks:
     cmds:
       - task: lib-generate
         vars:
-          board: "SG13G2"
+          board: "{{.TECH}}"
       - task: lib-sealring
         vars:
-          board: "SG13G2"
+          board: "{{.TECH}}"
+      - "mkdir -p {{ .BUILD_ROOT }}/{{ .SOC }}/{{ .board }}/zibal/macros/bondpad"
+      - "cp {{.OPENROAD_FLOW_ROOT}}/platforms/ihp-sg13g2/lef/bondpad_70x70.lef {{ .BUILD_ROOT }}/{{ .SOC }}/{{ .board }}/zibal/macros/bondpad/"
+      - "cp {{.OPENROAD_FLOW_ROOT}}/platforms/ihp-sg13g2/gds/bondpad_70x70.gds {{ .BUILD_ROOT }}/{{ .SOC }}/{{ .board }}/zibal/macros/bondpad/"
+      # TODO: wait until sg13cmos5l is public and bondpad.py got fixed
+      #- task: lib-bondpad
+      #  vars:
+      #    board: "{{.TECH}}"
 
   simulate:
     desc: Runs simulations at the RTL level. Add 'duration=n' to specify the duration in n milliseconds.
     cmds:
       - task: lib-simulate
         vars:
-          board: "SG13G2"
+          board: "{{.TECH}}"
 
   view-simulation:
     desc: Opens the simulation with GTKWave.
     cmds:
       - task: lib-view-simulation
         vars:
-          board: "SG13G2"
+          board: "{{.TECH}}"
 
   layout:
     desc: Creates the physical layout of the chip.
     cmds:
       - task: lib-layout
         vars:
-          board: "SG13G2"
+          board: "{{.TECH}}"
 
   filler:
     desc: Inserts filler cells into the layout to ensure proper chip functionality.
     cmds:
       - task: lib-filler
         vars:
-          board: "SG13G2"
+          board: "{{.TECH}}"
 
   run-drc:
     desc: Performs Design Rule Checks and reports violations; use 'level=minimal' for a basic check.
     cmds:
       - task: lib-run-drc
         vars:
-          board: "SG13G2"
+          board: "{{.TECH}}"
 
   view-drc:
     desc: Displays DRC results in KLayout; 'level=minimal' opens minimal deck results.
     cmds:
       - task: lib-view-drc
         vars:
-          board: "SG13G2"
+          board: "{{.TECH}}"
 
   view-openroad:
     desc: Loads the layout into OpenROAD for further analysis or modification.
     cmds:
       - task: lib-view-openroad
         vars:
-          board: "SG13G2"
+          board: "{{.TECH}}"
 
   view-klayout:
     desc: Opens the chip layout in KLayout for inspection.
     cmds:
       - task: lib-view-klayout
         vars:
-          board: "SG13G2"
+          board: "{{.TECH}}"
 
   check-logs:
     desc: Checks the build directory for warnings or errors in the logs.
     cmds:
       - task: lib-check-logs
         vars:
-          board: "SG13G2"
+          board: "{{.TECH}}"
 
   default:
     desc: Executes the full IHP SG13G2 RTL-to-GDSII flow and validates the layout afterwards.
