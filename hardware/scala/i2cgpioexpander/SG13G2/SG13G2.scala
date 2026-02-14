@@ -23,14 +23,14 @@ case class SG13G2Top(p: I2cGpioExpander.Parameter, resetDelay: Int) extends Comp
       val interrupt = IhpCmosIo("south", 4, "clk_core")
     }
     val gpio = Vec(
+      IhpCmosIo("west", 0, "clk_core"),
+      IhpCmosIo("west", 1, "clk_core"),
+      IhpCmosIo("west", 2, "clk_core"),
       IhpCmosIo("north", 0, "clk_core"),
       IhpCmosIo("north", 1, "clk_core"),
       IhpCmosIo("north", 2, "clk_core"),
       IhpCmosIo("north", 3, "clk_core"),
-      IhpCmosIo("north", 4, "clk_core"),
-      IhpCmosIo("west", 0, "clk_core"),
-      IhpCmosIo("west", 1, "clk_core"),
-      IhpCmosIo("west", 2, "clk_core")
+      IhpCmosIo("north", 4, "clk_core")
     )
     val address = Vec(
       IhpCmosIo("east", 2, "clk_core"),
