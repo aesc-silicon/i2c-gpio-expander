@@ -36,12 +36,14 @@ script:
   - |
     if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then
       BRANCH="main"
+      NIGHTLY="nightly=1"
     else
       BRANCH="${TRAVIS_PULL_REQUEST_BRANCH:-main}"
+      NIGHTLY=""
     fi
 
   # Prepare the project
-  - task install branch=${BRANCH}
+  - task install branch=${BRANCH} ${NIGHTLY}
 
   # Prepare files
   - IS_HEADLESS=true task prepare
