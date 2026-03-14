@@ -8,6 +8,7 @@ import spinal.core.sim._
 import spinal.lib._
 
 import nafarr.blackboxes.ihp.sg13g2._
+import nafarr.blackboxes.ihp.common._
 
 import zibal.misc.OpenROADTools
 
@@ -15,27 +16,27 @@ import elements.sdk.ElementsApp
 
 case class SG13G2Top(p: I2cGpioExpander.Parameter, resetDelay: Int) extends Component {
   val io = new Bundle {
-    val clock = IhpCmosIo("south", 0)
-    val reset = IhpCmosIo("south", 1, "clk_core")
+    val clock = IhpCmosIo(Edge.South, 0)
+    val reset = IhpCmosIo(Edge.South, 1, "clk_core")
     val i2c = new Bundle {
-      val scl = IhpCmosIo("south", 2, "clk_core")
-      val sda = IhpCmosIo("south", 3, "clk_core")
-      val interrupt = IhpCmosIo("south", 4, "clk_core")
+      val scl = IhpCmosIo(Edge.South, 2, "clk_core")
+      val sda = IhpCmosIo(Edge.South, 3, "clk_core")
+      val interrupt = IhpCmosIo(Edge.South, 4, "clk_core")
     }
     val gpio = Vec(
-      IhpCmosIo("west", 0, "clk_core"),
-      IhpCmosIo("west", 1, "clk_core"),
-      IhpCmosIo("west", 2, "clk_core"),
-      IhpCmosIo("north", 0, "clk_core"),
-      IhpCmosIo("north", 1, "clk_core"),
-      IhpCmosIo("north", 2, "clk_core"),
-      IhpCmosIo("north", 3, "clk_core"),
-      IhpCmosIo("north", 4, "clk_core")
+      IhpCmosIo(Edge.West, 0, "clk_core"),
+      IhpCmosIo(Edge.West, 1, "clk_core"),
+      IhpCmosIo(Edge.West, 2, "clk_core"),
+      IhpCmosIo(Edge.North, 0, "clk_core"),
+      IhpCmosIo(Edge.North, 1, "clk_core"),
+      IhpCmosIo(Edge.North, 2, "clk_core"),
+      IhpCmosIo(Edge.North, 3, "clk_core"),
+      IhpCmosIo(Edge.North, 4, "clk_core")
     )
     val address = Vec(
-      IhpCmosIo("east", 2, "clk_core"),
-      IhpCmosIo("east", 3, "clk_core"),
-      IhpCmosIo("east", 4, "clk_core")
+      IhpCmosIo(Edge.East, 2, "clk_core"),
+      IhpCmosIo(Edge.East, 3, "clk_core"),
+      IhpCmosIo(Edge.East, 4, "clk_core")
     )
   }
   val clock = Bool
@@ -67,6 +68,13 @@ case class SG13G2Top(p: I2cGpioExpander.Parameter, resetDelay: Int) extends Comp
   for (index <- 0 until io.gpio.length) {
     io.gpio(index) <> IOPadInOut16mA(system.expander.io.gpio.pins(index))
   }
+
+  val power = Seq(
+    IhpPowerIo(Edge.East, 0, IhpPowerIoCell.SG13G2.Vdd),
+    IhpPowerIo(Edge.East, 1, IhpPowerIoCell.SG13G2.Vss),
+    IhpPowerIo(Edge.West, 3, IhpPowerIoCell.SG13G2.IOVss),
+    IhpPowerIo(Edge.West, 4, IhpPowerIoCell.SG13G2.IOVdd)
+  )
 }
 object SG13G2Generate extends ElementsApp {
   val report = elementsConfig.genASICSpinalConfig.generateVerilog {
@@ -86,14 +94,11 @@ object SG13G2Generate extends ElementsApp {
   chip.dieArea = (0, 0, 1050.24, 1050.84)
   chip.coreArea = (351.36, 351.54, 699.84, 699.3)
   chip.hasIoRing = true
-  chip.addBlock("I2cDeviceCtrl")
+  chip.addBlock(report.toplevel.system.expander.i2cCtrl, "I2cDeviceCtrl", 351.7, 351.94)
   chip.addClock(report.toplevel.io.clock.PAD, 50 MHz, "clk_core")
   chip.io = Some(report.toplevel.io)
+  chip.ioPower = Some(report.toplevel.power)
   chip.pdnRingWidth = 8.0
   chip.pdnRingSpace = 5.0
-  chip.addPad("east", 0, "sg13g2_IOPadVdd")
-  chip.addPad("east", 1, "sg13g2_IOPadVss")
-  chip.addPad("west", 3, "sg13g2_IOPadIOVss")
-  chip.addPad("west", 4, "sg13g2_IOPadIOVdd")
   chip.generate
 }
