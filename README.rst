@@ -87,13 +87,13 @@ Start by generating the necessary files for the ECPIX5 Board, then synthesize th
 
 .. code-block:: text
 
-    task fpga-prepare fpga-synthesize
+    task fpga:prepare fpga:synthesize
 
 Next, program the ECP5 FPGA with the synthesized bitstream.
 
 .. code-block:: text
 
-    task fpga-flash
+    task fpga:flash
 
 Connect PMOD0 pin 0 (SCL) and pin 1 (SDA) to an I2C Controller (Master) interface.
 
