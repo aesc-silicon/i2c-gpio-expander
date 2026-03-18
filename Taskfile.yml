@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: 2025 aesc silicon
 #
 # SPDX-License-Identifier: CERN-OHL-W-2.0
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
 
 version: '3'
 
@@ -35,6 +36,7 @@ vars:
   CONTAINER_NAME: i2c-gpio-expander_container
   CONTAINER_ENV: " \
     -e SOC={{ .SOC }} \
+    -e TECH={{ .TECH }} \
     -e FPGA_FAMILY={{ .FPGA_FAMILY }} \
     -e FPGA_DEVICE={{ .FPGA_DEVICE }} \
     -e FPGA_PACKAGE={{ .FPGA_PACKAGE }} \
@@ -48,8 +50,7 @@ vars:
 "
 
 tasks:
-  project-prepare:
-    desc: Sets up a virtual environment, installs tools, and initializes project dependencies.
+  _project-prepare:
     cmds:
       - virtualenv venv
       - venv/bin/pip3 install podman-compose==1.0.6
@@ -57,10 +58,11 @@ tasks:
       - chmod a+rx repo
       - ./repo init -u https://github.com/aesc-silicon/i2c-gpio-expander.git -b {{if .branch}}{{.branch}}{{else}}main{{end}} -m manifest{{if .nightly}}-nightly{{end}}.xml
 
-  build-container:
+  _build-container:
     desc: Creates a container with all necessary host requirements pre-installed.
     cmds:
       - venv/bin/podman-compose pull
+
   repo-sync:
     desc: Downloads and synchronizes all required dependencies.
     cmds:
@@ -68,8 +70,8 @@ tasks:
   install:
     desc: Installs all dependencies and prepares the project for FPGA and chip workflows.
     cmds:
-      - task: project-prepare
-      - task: build-container
+      - task: _project-prepare
+      - task: _build-container
       - task: repo-sync
     vars:
       branch: "main"
