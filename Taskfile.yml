@@ -87,8 +87,8 @@ tasks:
         vars:
           board: "{{.TECH}}"
       - "mkdir -p {{ .BUILD_ROOT }}/{{ .SOC }}/{{ .TECH }}/zibal/macros/bondpad"
-      - "cp {{.OPENROAD_FLOW_ROOT}}/platforms/ihp-sg13g2/lef/bondpad_70x70.lef {{ .BUILD_ROOT }}/{{ .SOC }}/{{ .TECH }}/zibal/macros/bondpad/"
-      - "cp {{.OPENROAD_FLOW_ROOT}}/platforms/ihp-sg13g2/gds/bondpad_70x70.gds {{ .BUILD_ROOT }}/{{ .SOC }}/{{ .TECH }}/zibal/macros/bondpad/bondpad_70x70.gds.gz"
+      - "cp tmp/{{ .PDK }}/bondpad_70x70.lef {{ .BUILD_ROOT }}/{{ .SOC }}/{{ .TECH }}/zibal/macros/bondpad/"
+      - "cp tmp/{{ .PDK }}/bondpad_70x70.gds.gz {{ .BUILD_ROOT }}/{{ .SOC }}/{{ .TECH }}/zibal/macros/bondpad/bondpad_70x70.gds.gz"
       # TODO: wait until sg13cmos5l is public and bondpad.py got fixed
       #- task: lib-bondpad
       #  vars:
