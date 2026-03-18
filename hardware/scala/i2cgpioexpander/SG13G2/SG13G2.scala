@@ -24,9 +24,9 @@ case class SG13G2Top(p: I2cGpioExpander.Parameter, resetDelay: Int) extends Comp
       val interrupt = IhpCmosIo(Edge.South, 4, "clk_core")
     }
     val gpio = Vec(
-      IhpCmosIo(Edge.West, 0, "clk_core"),
-      IhpCmosIo(Edge.West, 1, "clk_core"),
       IhpCmosIo(Edge.West, 2, "clk_core"),
+      IhpCmosIo(Edge.West, 3, "clk_core"),
+      IhpCmosIo(Edge.West, 4, "clk_core"),
       IhpCmosIo(Edge.North, 0, "clk_core"),
       IhpCmosIo(Edge.North, 1, "clk_core"),
       IhpCmosIo(Edge.North, 2, "clk_core"),
@@ -72,8 +72,8 @@ case class SG13G2Top(p: I2cGpioExpander.Parameter, resetDelay: Int) extends Comp
   val power = Seq(
     IhpPowerIo(Edge.East, 0, IhpPowerIoCell.SG13G2.Vdd),
     IhpPowerIo(Edge.East, 1, IhpPowerIoCell.SG13G2.Vss),
-    IhpPowerIo(Edge.West, 3, IhpPowerIoCell.SG13G2.IOVss),
-    IhpPowerIo(Edge.West, 4, IhpPowerIoCell.SG13G2.IOVdd)
+    IhpPowerIo(Edge.West, 0, IhpPowerIoCell.SG13G2.IOVdd),
+    IhpPowerIo(Edge.West, 1, IhpPowerIoCell.SG13G2.IOVss)
   )
 }
 object SG13G2Generate extends ElementsApp {
