@@ -61,12 +61,12 @@ tasks:
   _build-container:
     desc: Creates a container with all necessary host requirements pre-installed.
     cmds:
-      - venv/bin/podman-compose pull
+      - venv/bin/podman-compose pull {{if .nightly}}-q{{end}}
 
   repo-sync:
     desc: Downloads and synchronizes all required dependencies.
     cmds:
-      - ./repo sync
+      - ./repo sync {{if .nightly}}-q{{end}}
   install:
     desc: Installs all dependencies and prepares the project for FPGA and chip workflows.
     cmds:
