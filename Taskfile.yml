@@ -60,12 +60,12 @@ tasks:
 
   _build-container:
     cmds:
-      - venv/bin/podman-compose pull {{if .nightly}}-q{{end}}
+      - venv/bin/podman-compose {{if .CI}}--podman-pull-args=-q{{end}} pull
 
   repo-sync:
     desc: Downloads and synchronizes all required dependencies.
     cmds:
-      - ./repo sync {{if .nightly}}-q{{end}}
+      - ./repo sync {{if .CI}}-q{{end}}
 
   install:
     desc: Installs all dependencies and prepares the project for FPGA and chip workflows.
@@ -76,7 +76,6 @@ tasks:
     vars:
       branch: "main"
       manifest_suffix: ""
-      nightly: "false"
 
   prepare:
     desc: Generates all necessary source files and metadata for chip layout creation.
