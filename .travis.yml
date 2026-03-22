@@ -12,8 +12,8 @@ branches:
   only:
     - main
 
-# Set timeout to 60 minutes
-timeout: 3600
+# Set timeout to 90 minutes
+timeout: 5400
 
 # Conditional logic for PRs vs Cron
 if: type IN (pull_request, cron)
@@ -46,6 +46,18 @@ script:
 
   # Prepare the project
   - task install branch=${BRANCH} ${NIGHTLY} ${MANIFEST_SUFFIX}
+
+  # Run test: write
+  - IS_HEADLESS=true task simulate test_case=write
+
+  # Run test: read
+  - IS_HEADLESS=true task simulate test_case=read
+
+  # Prepare FPGA files
+  - IS_HEADLESS=true task fpga:prepare
+
+  # Synthesize FPGA design
+  - IS_HEADLESS=true task fpga:synthesize
 
   # Prepare files
   - IS_HEADLESS=true task prepare
