@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
 package i2cgpioexpander
+
 import spinal.core._
 import spinal.core.sim._
 import spinal.lib._
@@ -11,8 +12,43 @@ import nafarr.blackboxes.ihp.sg13g2._
 import nafarr.blackboxes.ihp.common._
 
 import zibal.misc.OpenROADTools
+import zibal.misc.TestCases
 
 import elements.sdk.ElementsApp
+
+case class SG13G2Board() extends Component {
+  val io = new Bundle {
+    val clock = inout(Analog(Bool))
+    val reset = inout(Analog(Bool))
+    val gpio = Vec(inout(Analog(Bool)), 8)
+    val i2c = new Bundle {
+      val scl = inout(Analog(Bool))
+      val sda = inout(Analog(Bool))
+      val interrupt = inout(Analog(Bool))
+    }
+  }
+
+  val top = SG13G2Top(I2cGpioExpander.Parameter.default.copy(addressWidth = 3), 128)
+  val analogFalse = Analog(Bool)
+  analogFalse := False
+  val analogTrue = Analog(Bool)
+  analogTrue := True
+
+  top.io.clock.PAD := io.clock
+  top.io.reset.PAD := io.reset
+
+  io.i2c.scl <> top.io.i2c.scl.PAD
+  io.i2c.sda <> top.io.i2c.sda.PAD
+  io.i2c.interrupt <> top.io.i2c.interrupt.PAD
+
+  for (index <- 0 until top.io.address.length) {
+    top.io.address(index).PAD := analogFalse
+  }
+
+  for (index <- 0 until top.io.gpio.length) {
+    io.gpio(index) <> top.io.gpio(index).PAD
+  }
+}
 
 case class SG13G2Top(p: I2cGpioExpander.Parameter, resetDelay: Int) extends Component {
   val io = new Bundle {
@@ -101,4 +137,100 @@ object SG13G2Generate extends ElementsApp {
   chip.pdnRingWidth = 8.0
   chip.pdnRingSpace = 5.0
   chip.generate
+}
+
+object SG13G2Simulate extends ElementsApp {
+  val compiled = elementsConfig.genFPGASimConfig.compile {
+    val board = SG13G2Board()
+    board.top.system.expander.io.i2c.sda.simPublic()
+    board
+  }
+  simType match {
+    case "simulate" =>
+      compiled.doSimUntilVoid("simulate") { dut =>
+        val testCases = TestCases()
+        val baudrate = 2500
+        val tickPeriod = baudrate / 4
+        val data: Seq[(BigInt, BigInt)] = List(
+          (BigInt("10000000", 2), BigInt("01010101", 2)),
+          (BigInt("01000000", 2), BigInt("00010101", 2))
+        )
+
+        testCases.addClock(
+          dut.io.clock,
+          dut.top.clockCtrl.mainClockDomain.frequency.getValue,
+          simDuration.toString.toInt ms
+        )
+        testCases.addReset(dut.io.reset, 100 us)
+        testCases.i2cDeviceWrite(
+          dut.io.i2c.sda,
+          dut.top.system.expander.io.i2c.sda,
+          dut.io.i2c.scl,
+          tickPeriod,
+          110 us,
+          BigInt("0000110", 2),
+          data
+        )
+      }
+    case "write" =>
+      compiled.doSimUntilVoid("simulate") { dut =>
+        val testCases = TestCases()
+        val baudrate = 2500
+        val tickPeriod = baudrate / 4
+        val data: Seq[(BigInt, BigInt)] = List(
+          (BigInt("10000000", 2), BigInt("01010101", 2)),
+          (BigInt("01000000", 2), BigInt("00010101", 2))
+        )
+
+        testCases.addClock(
+          dut.io.clock,
+          dut.top.clockCtrl.mainClockDomain.frequency.getValue,
+          simDuration.toString.toInt ms
+        )
+        testCases.addReset(dut.io.reset, 100 us)
+        testCases.i2cDeviceWrite(
+          dut.io.i2c.sda,
+          dut.top.system.expander.io.i2c.sda,
+          dut.io.i2c.scl,
+          tickPeriod,
+          110 us,
+          BigInt("0000110", 2),
+          data
+        )
+        testCases.gpioCheckStates(dut.io.gpio, BigInt("10101000", 2), 300 us)
+      }
+    case "read" =>
+      compiled.doSimUntilVoid("simulate") { dut =>
+        val testCases = TestCases()
+        val baudrate = 2500
+        val tickPeriod = baudrate / 4
+
+        fork {
+          while (true) {
+            dut.io.gpio(3) #= true
+            dut.io.gpio(5) #= true
+            dut.io.gpio(7) #= true
+            sleep(5 * 1000)
+          }
+        }
+
+        testCases.addClock(
+          dut.io.clock,
+          dut.top.clockCtrl.mainClockDomain.frequency.getValue,
+          simDuration.toString.toInt ms
+        )
+        testCases.addReset(dut.io.reset, 100 us)
+        dut.io.gpio(0) #= true
+        testCases.i2cDeviceRead(
+          dut.io.i2c.sda,
+          dut.top.system.expander.io.i2c.sda,
+          dut.io.i2c.scl,
+          tickPeriod,
+          110 us,
+          BigInt("0000110", 2),
+          BigInt("00000000", 2),
+          BigInt("00010101", 2)
+        )
+      }
+  }
 }
