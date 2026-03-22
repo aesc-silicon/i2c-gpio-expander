@@ -47,13 +47,14 @@ object I2cGpioExpander {
       val latchedAddress = Reg(Bits(p.addressWidth bits))
       val latch = RegInit(False)
 
+      i2cCtrl.io.config.clockDividerReload := False
       when(!latch) {
         latchedAddress := io.address
+        i2cCtrl.io.config.clockDividerReload := True
         latch := True
       }
 
       i2cCtrl.io.config.clockDivider := U(p.clockDivider)
-      i2cCtrl.io.config.clockDividerReload := True
       i2cCtrl.io.config.timeout := U(p.timeoutCycles)
       i2cCtrl.io.config.deviceAddr := B(p.deviceAddress, 7 - p.addressWidth bit) ##
         latchedAddress
