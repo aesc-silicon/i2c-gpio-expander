@@ -5,12 +5,6 @@
 
 version: '3'
 
-includes:
-  lib:
-    taskfile: ./modules/elements/zibal/Taskfile.yaml
-    optional: true
-    flatten: true
-
 tasks:
   default:
     desc: Runs the full FPGA flow - prepare, synthesize, and flash.
@@ -22,14 +16,15 @@ tasks:
   prepare:
     desc: Produces the Verilog file and metadata needed for FPGA operations.
     cmds:
-      - task: lib-generate
+      - task: ':lib-generate'
         vars:
           board: "ECPIX5"
+          package: "i2cgpioexpander"
 
   synthesize:
     desc: Generates the FPGA bitstream by synthesizing the design.
     cmds:
-      - task: lib-synthesize-fpga
+      - task: ':lib-synthesize-fpga'
         vars:
           board: "ECPIX5"
           vendor: "Lattice"
@@ -37,20 +32,20 @@ tasks:
   flash:
     desc: Programs the FPGA with the generated bitstream.
     cmds:
-      - task: lib-flash-bitstream
+      - task: ':lib-flash-bitstream'
         vars:
           board: "ECPIX5"
 
   simulate:
     desc: Runs simulations at the RTL level. Add 'duration=n' to specify the duration in n milliseconds.
     cmds:
-      - task: lib-simulate
+      - task: ':lib-simulate'
         vars:
           board: "ECPIX5"
 
   view-simulation:
     desc: Opens the simulation with GTKWave.
     cmds:
-      - task: lib-view-simulation
+      - task: ':lib-view-simulation'
         vars:
           board: "ECPIX5"
