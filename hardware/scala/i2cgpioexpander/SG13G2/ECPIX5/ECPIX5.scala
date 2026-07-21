@@ -2,7 +2,9 @@
 //
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
-package i2cgpioexpander
+package i2cgpioexpander.SG13G2
+
+import i2cgpioexpander.I2cGpioExpander
 
 import spinal.core._
 import spinal.core.sim._

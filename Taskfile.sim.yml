@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: 2026 aesc silicon
+#
+# SPDX-License-Identifier: CERN-OHL-W-2.0
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: '3'
+
+tasks:
+  default:
+    desc: Runs the RTL simulation and opens the result in GTKWave. Add 'test_case=name' and/or 'duration=n'.
+    cmds:
+      - task: simulate
+      - task: waves
+
+  simulate:
+    desc: >-
+      Runs simulations at the RTL level. Add 'test_case=name' to select a testbench
+      and 'duration=n' to specify the duration in n milliseconds.
+    cmds:
+      - task: ':lib-simulate'
+
+  waves:
+    desc: Opens the simulation result in GTKWave.
+    aliases: [view-simulation]
+    cmds:
+      - task: ':lib-view-simulation'
