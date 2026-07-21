@@ -64,7 +64,7 @@ This project uses Taskfile as its task runner tool. You can install Taskfile usi
 
         task -a
 
-**Note:** By default, the X-Server is required for the `view-klayout` and `view-openroad` tasks. On headless systems, you can bypass this requirement by adding `IS_HEADLESS=true` before the task command. This is particularly useful when accessing the system via SSH, as it allows you to run the container without the need for X-Server.
+**Note:** By default, the X-Server is required for the `asic:klayout` and `asic:openroad` tasks. On headless systems, you can bypass this requirement by adding `IS_HEADLESS=true` before the task command. This is particularly useful when accessing the system via SSH, as it allows you to run the container without the need for X-Server.
 
 
 Register Map
@@ -100,11 +100,12 @@ Connect PMOD0 pin 0 (SCL) and pin 1 (SDA) to an I2C Controller (Master) interfac
 ASIC Flow
 #########
 
-The ASIC flow closely resembles the FPGA flow. Begin by generating all required files, then proceed with chip layout creation and filler insertion.
+The ASIC flow closely resembles the FPGA flow. Begin by generating all required files, then proceed with chip layout creation and filler insertion. Select the process node with the ``TARGET`` variable (``SG13G2`` by default, ``SG13CMOS5L`` also supported).
 
 .. code-block:: text
 
-    task prepare layout filler
+    task asic:prepare asic:build asic:fill
+    task asic:prepare asic:build asic:fill TARGET=SG13CMOS5L
 
 If the chip layout process fails, consult the **Known Issues** section for troubleshooting tips.
 
@@ -112,20 +113,20 @@ Finally, review the chip layout using OpenROAD or KLayout.
 
 .. code-block:: text
 
-    task view-klayout
-    task view-openroad
+    task asic:klayout
+    task asic:openroad
 
 Earlier stages of the layout process can also be reviewed in OpenROAD by passing the `stage` argument.
 
 .. code-block:: text
 
-    task view-openroad stage=6_final
+    task asic:openroad stage=6_final
 
-Additionally, you can view a specific block from the hierarchical flow generation by providing the ``block`` argument.
+Additionally, you can view a specific block from the hierarchical flow generation by providing the ``macro`` argument.
 
 .. code-block:: text
 
-    task view-openroad block=I2cDeviceCtrl
+    task asic:openroad macro=I2cDeviceCtrl
 
 Design Rule Checks
 ##################
@@ -134,15 +135,15 @@ Use the following tasks to perform Design Rule Checks (DRC) on the chip layout. 
 
 .. code-block:: text
 
-    task run-drc level=minimal
-    task view-drc level=minimal
+    task asic:drc level=minimal
+    task asic:klayout mode=drc
 
 To run an enhanced rule set, use the standard DRC commands:
 
 .. code-block:: text
 
-    task run-drc
-    task view-drc
+    task asic:drc
+    task asic:klayout mode=drc
 
 Tape-out
 ########
@@ -156,7 +157,7 @@ The default task runs the complete RTL-to-GDSII tape-out flow in one step. The f
 Known Issues
 ############
 
-- **X-Server**: If you encounter an error when running `view-klayout` or `view-openroad`, it may be due to permission restrictions with the X-Server. To resolve this, run the following command in your terminal to add the current user to the X-Server backend:
+- **X-Server**: If you encounter an error when running `asic:klayout` or `asic:openroad`, it may be due to permission restrictions with the X-Server. To resolve this, run the following command in your terminal to add the current user to the X-Server backend:
 
   .. code-block:: text
 
