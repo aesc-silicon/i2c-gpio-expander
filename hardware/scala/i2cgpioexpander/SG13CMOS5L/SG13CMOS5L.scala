@@ -12,6 +12,7 @@ import nafarr.blackboxes.ihp.sg13cmos5l._
 import nafarr.blackboxes.ihp.common._
 
 import zibal.misc.OpenROADTools
+import zibal.misc.LibreLaneTools
 import zibal.misc.TestCases
 
 import elements.sdk.ElementsApp
@@ -117,6 +118,18 @@ object SG13CMOS5LGenerate extends ElementsApp {
     val top = SG13CMOS5LTop(I2cGpioExpander.Parameter.default.copy(addressWidth = 3), 128)
     top
   }
+
+  val chipLL = LibreLaneTools.Config(elementsConfig, LibreLaneTools.PDKs.IHP.sg13g2)
+  chipLL.dieArea = (0, 0, 1050.24, 1050.84)
+  chipLL.coreArea = (351.36, 351.54, 699.84, 699.3)
+  chipLL.hasIoRing = true
+  chipLL.addClock(report.toplevel.io.clock.PAD, 50 MHz, "clk_core")
+  chipLL.io = Some(report.toplevel.io)
+  chipLL.ioPower = Some(report.toplevel.power)
+  chipLL.pdnRingWidth = 8.0
+  chipLL.pdnRingSpace = 5.0
+  chipLL.disabledSteps += "Checker.IllegalOverlap"
+  chipLL.generate
 
   val chip = OpenROADTools.IHP.Config(elementsConfig, OpenROADTools.PDKs.IHP.sg13cmos5l)
   chip.dieArea = (0, 0, 1050.24, 1050.84)
