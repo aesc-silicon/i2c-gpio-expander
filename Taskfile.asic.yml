@@ -31,13 +31,45 @@ tasks:
       #- task: ':lib-bondpad'
 
   build:
-    desc: Creates the physical layout of the chip (RTL-to-GDSII place-and-route).
+    desc: Creates the physical layout of the chip (RTL-to-GDSII place-and-route) via ORFS. Optional 'macro=NAME' and 'stage=NAME'.
     aliases: [layout]
     preconditions:
       - sh: 'test -f {{.BUILD_ROOT}}/{{.SOC}}/{{.TARGET}}/zibal/{{.TOPCELL}}.mk'
         msg: "Design not prepared. Run 'task asic:prepare SOC={{.SOC}} TARGET={{.TARGET}}' first."
     cmds:
       - task: ':lib-layout'
+        vars:
+          macro: '{{.macro}}'
+          stage: '{{.stage}}'
+
+  librelane-build:
+    desc: Hardens the design(s) with the LibreLane flow (blocks first, then the top). Pass 'macro=NAME' to build only that design.
+    preconditions:
+      - sh: 'test -f {{.BUILD_ROOT}}/{{.SOC}}/{{.TARGET}}/zibal/librelane/build-order.txt'
+        msg: "Design not prepared. Run 'task asic:prepare SOC={{.SOC}} TARGET={{.TARGET}}' first."
+    cmds:
+      - task: ':lib-librelane-build'
+        vars:
+          macro: '{{.macro}}'
+
+  librelane-openroad:
+    desc: >-
+      Loads the LibreLane result into OpenROAD. mode=empty starts an empty
+      session. Optional 'macro=NAME' to open a hardened block.
+    cmds:
+      - task: ':{{if eq .mode "empty"}}open-openroad{{else}}lib-librelane-openroad{{end}}'
+        vars:
+          macro: '{{.macro}}'
+
+  librelane-klayout:
+    desc: >-
+      Opens KLayout on the LibreLane result. mode=empty starts a blank canvas,
+      mode=drc loads the layout with the KLayout DRC marker database.
+      Optional 'macro=NAME' to open a hardened block.
+    cmds:
+      - task: ':{{if eq .mode "empty"}}open-klayout{{else if eq .mode "drc"}}lib-librelane-view-drc{{else}}lib-librelane-klayout{{end}}'
+        vars:
+          macro: '{{.macro}}'
 
   fill:
     desc: Inserts filler cells into the layout to ensure proper chip functionality.
