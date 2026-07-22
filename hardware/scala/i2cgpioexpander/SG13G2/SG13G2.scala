@@ -12,6 +12,7 @@ import nafarr.blackboxes.ihp.sg13g2._
 import nafarr.blackboxes.ihp.common._
 
 import zibal.misc.OpenROADTools
+import zibal.misc.LibreLaneTools
 import zibal.misc.TestCases
 
 import elements.sdk.ElementsApp
@@ -117,6 +118,27 @@ object SG13G2Generate extends ElementsApp {
     val top = SG13G2Top(I2cGpioExpander.Parameter.default.copy(addressWidth = 3), 128)
     top
   }
+
+  val i2cDeviceLL = LibreLaneTools.Config(elementsConfig, LibreLaneTools.PDKs.IHP.sg13g2, true)
+  i2cDeviceLL.dieArea = (0, 0, 147.84, 147.42)
+  i2cDeviceLL.coreArea = (15.36, 15.12, 132, 132.3)
+  i2cDeviceLL.pdnRingWidth = 3.0
+  i2cDeviceLL.pdnRingSpace = 2.0
+  i2cDeviceLL.addClock(report.toplevel.clockCtrl.mainClockDomain.clock, 50 MHz)
+  i2cDeviceLL.generate("I2cDeviceCtrl")
+
+  val chipLL = LibreLaneTools.Config(elementsConfig, LibreLaneTools.PDKs.IHP.sg13g2)
+  chipLL.dieArea = (0, 0, 1050.24, 1050.84)
+  chipLL.coreArea = (351.36, 351.54, 699.84, 699.3)
+  chipLL.hasIoRing = true
+  chipLL.addBlock(report.toplevel.system.expander.i2cCtrl, "I2cDeviceCtrl", 351.36, 351.54)
+  chipLL.addClock(report.toplevel.io.clock.PAD, 50 MHz, "clk_core")
+  chipLL.io = Some(report.toplevel.io)
+  chipLL.ioPower = Some(report.toplevel.power)
+  chipLL.pdnRingWidth = 8.0
+  chipLL.pdnRingSpace = 5.0
+  chipLL.disabledSteps += "Checker.IllegalOverlap"
+  chipLL.generate
 
   val i2cDevice = OpenROADTools.IHP.Config(elementsConfig, OpenROADTools.PDKs.IHP.sg13g2, true)
   i2cDevice.dieArea = (0, 0, 147.84, 147.42)
