@@ -45,6 +45,9 @@ script:
   # Prepare the project
   - CI=true IS_HEADLESS=true task install branch=${BRANCH} ${MANIFEST_SUFFIX}
 
+  # Prepare files
+  - CI=true IS_HEADLESS=true task asic:prepare
+
   # Run test: write
   - IS_HEADLESS=true task sim:simulate test_case=write
 
@@ -56,9 +59,6 @@ script:
 
   # Synthesize FPGA design
   - IS_HEADLESS=true task fpga:synthesize TARGET=SG13G2
-
-  # Prepare files
-  - CI=true IS_HEADLESS=true task asic:prepare
 
   # Generate layout
   - CI=true IS_HEADLESS=true task asic:build
