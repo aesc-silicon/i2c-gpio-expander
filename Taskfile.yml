@@ -89,8 +89,8 @@ vars:
     -e FPGA_PACKAGE={{.FPGA_PACKAGE}} \
     -e FPGA_FREQUENCY={{.FPGA_FREQUENCY}} \
     -e KLAYOUT_HOME={{.KLAYOUT_HOME}} \
-    -e NAFARR_BASE={{.NAFARR_BASE}} \
     -e ZIBAL_BASE={{.ZIBAL_BASE}} \
+    -e NAFARR_BASE={{.NAFARR_BASE}} \
     -e BUILD_ROOT={{.BUILD_ROOT}} \
     -e USER={{.USER}} \
     -e RULES_JSON={{.PWD}}/hardware/scala/{{.package}}/{{.TARGET}}/rules.json \
@@ -102,10 +102,11 @@ env:
   FPGA_PACKAGE: CABGA554
   FPGA_FREQUENCY: 50
   OPENFPGALOADER_BOARD: ecpix5_r03
-  PDK_ROOT: "{{.PWD}}/pdks"
-  NAFARR_BASE: "{{.PWD}}/modules/elements/nafarr/"
-  ZIBAL_BASE: "{{.PWD}}/modules/elements/zibal/"
-  BUILD_ROOT: "{{.PWD}}/build/"
+  # TODO CMOS5L is not yet supported in Ciel
+  PDK_ROOT: "{{.PWD}}/pdks/IHP-Open-PDK"
+  ZIBAL_BASE: "{{.PWD}}/modules/elements/zibal"
+  NAFARR_BASE: "{{.ZIBAL_BASE}}/ext/nafarr"
+  BUILD_ROOT: "{{.PWD}}/build"
   OPENROAD_FLOW_ROOT: "{{.PWD}}/tools/OpenROAD-flow-scripts/flow"
 
 tasks:
@@ -140,7 +141,6 @@ tasks:
     desc: Downloads and synchronizes all required dependencies.
     cmds:
       - ./repo sync {{if .CI}}-q{{end}}
-      - ./repo forall modules/elements/vexiiriscv -c 'git submodule update --init --recursive'
 
   install:
     desc: Installs all dependencies and prepares the project for FPGA and chip workflows.

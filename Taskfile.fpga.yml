@@ -16,9 +16,6 @@ tasks:
   prepare:
     desc: Produces the Verilog file and metadata needed for FPGA operations.
     cmds:
-      - task: ':lib-sbt-publishLocal'
-        vars:
-          project: "modules/elements/vexiiriscv"
       - task: ':lib-generate'
         vars:
           FPGA: "ECPIX5"
@@ -32,8 +29,26 @@ tasks:
           vendor: "Lattice"
 
   flash:
-    desc: Programs the FPGA with the generated bitstream.
+    desc: Programs the FPGA with the generated bitstream. Add 'mode=spi' to write the external SPI flash (default loads volatile SRAM).
     cmds:
       - task: ':lib-flash-bitstream'
         vars:
           FPGA: "ECPIX5"
+          mode: "{{ .mode }}"
+
+  simulate:
+    desc: Runs simulations at the RTL level. Add 'duration=n' to specify the duration in n milliseconds.
+    cmds:
+      - task: ':lib-simulate'
+        vars:
+          FPGA: "ECPIX5"
+
+  waves:
+    desc: >-
+      Opens the simulation result in GTKWave. Uses hardware/scala/<soc>/wave.gtkw
+      as the signal selection when that file exists.
+    cmds:
+      - task: ':lib-view-simulation'
+        vars:
+          FPGA: "ECPIX5"
+          savefile: "hardware/scala/{{.package}}/wave.gtkw"
