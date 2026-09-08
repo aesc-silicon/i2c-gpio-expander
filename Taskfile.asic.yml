@@ -19,9 +19,6 @@ tasks:
   prepare:
     desc: Generates all necessary source files and metadata for chip layout creation.
     cmds:
-      - task: ':lib-sbt-publishLocal'
-        vars:
-          project: "modules/elements/vexiiriscv"
       - task: ':lib-generate'
       - task: ':lib-sealring'
       - "mkdir -p {{.BUILD_ROOT}}/{{.SOC}}/{{.TARGET}}/zibal/macros/bondpad"
@@ -38,9 +35,6 @@ tasks:
         msg: "Design not prepared. Run 'task asic:prepare SOC={{.SOC}} TARGET={{.TARGET}}' first."
     cmds:
       - task: ':lib-layout'
-        vars:
-          macro: '{{.macro}}'
-          stage: '{{.stage}}'
 
   librelane-build:
     desc: Hardens the design(s) with the LibreLane flow (blocks first, then the top). Pass 'macro=NAME' to build only that design.
@@ -113,10 +107,9 @@ tasks:
   klayout:
     desc: >-
       Opens KLayout on the chip layout. mode=empty starts a blank canvas,
-      mode=drc loads the layout with DRC results, mode=lvs loads it with the
-      LVS netlist database (opens the Netlist Database Browser). Optional 'macro=NAME'.
+      mode=drc loads the layout with DRC results. Optional 'macro=NAME'.
     cmds:
-      - task: ':{{if eq .mode "empty"}}open-klayout{{else if eq .mode "drc"}}lib-view-drc{{else if eq .mode "lvs"}}lib-view-lvs{{else}}lib-view-klayout{{end}}'
+      - task: ':{{if eq .mode "empty"}}open-klayout{{else if eq .mode "drc"}}lib-view-drc{{else}}lib-view-klayout{{end}}'
         vars:
           macro: '{{.macro}}'
 

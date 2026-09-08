@@ -49,16 +49,16 @@ script:
   - CI=true IS_HEADLESS=true task asic:prepare
 
   # Run test: write
-  - IS_HEADLESS=true task sim:simulate test_case=write
+  - CI=true IS_HEADLESS=true task sim:simulate test_case=write
 
   # Run test: read
-  - IS_HEADLESS=true task sim:simulate test_case=read
+  - CI=true IS_HEADLESS=true task sim:simulate test_case=read
 
   # Prepare FPGA files
-  - IS_HEADLESS=true task fpga:prepare TARGET=SG13G2
+  - CI=true IS_HEADLESS=true task fpga:prepare
 
   # Synthesize FPGA design
-  - IS_HEADLESS=true task fpga:synthesize TARGET=SG13G2
+  - CI=true IS_HEADLESS=true task fpga:synthesize
 
   # Generate layout
   - CI=true IS_HEADLESS=true task asic:build

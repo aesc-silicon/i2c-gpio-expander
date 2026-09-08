@@ -6,16 +6,8 @@
 version: '3'
 
 tasks:
-  default:
-    desc: Runs the RTL simulation and opens the result in GTKWave. Add 'test_case=name' and/or 'duration=n'.
-    cmds:
-      - task: simulate
-      - task: waves
-
   simulate:
-    desc: >-
-      Runs simulations at the RTL level. Add 'test_case=name' to select a testbench
-      and 'duration=n' to specify the duration in n milliseconds.
+    desc: Runs simulations at the RTL level. Add 'duration=n' to specify the duration in n milliseconds.
     cmds:
       - task: ':lib-simulate'
 
