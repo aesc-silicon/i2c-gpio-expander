@@ -144,7 +144,7 @@ object SG13CMOS5LGenerate extends ElementsApp {
 }
 
 object SG13CMOS5LSimulate extends ElementsApp {
-  val compiled = elementsConfig.genFPGASimConfig.compile {
+  val compiled = elementsConfig.genASICSimConfig.compile {
     val board = SG13G2Board()
     board.top.system.expander.io.i2c.sda.simPublic()
     board
